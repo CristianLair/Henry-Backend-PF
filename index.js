@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 })
 
 // routes
-//app.use('/api', nftRoutes)
+app.use('/api', nftRoutes)
 
 //conext to db
 mongoose.connect(process.env.MONGO_URI)
