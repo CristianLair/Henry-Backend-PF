@@ -2,20 +2,17 @@ const express = require('express');
 
 const router = express.Router();
 
+import { getAllNft, getIdNft} from '../controllers/nftGetController.js'
+import {createNft} from '../controllers/nftPostController.js'
+
 // GET all nfts
-router.get('/nfts', (req, res) => {
-    res.json({mssg: 'GET all nfts'})
-  })
+router.get('/nfts', getAllNft )
   
   // GET a single nft
-  router.get('/nft/:id', (req, res) => {
-    res.json({mssg: 'GET a single nft'})
-  })
+  router.get('/nft/:id', getIdNft)
   
   // POST a new nft
-  router.post('/nft', (req, res) => {
-    res.json({mssg: 'POST a new nft'})
-  })
+  router.post('/nft', createNft)
   
    //testingtestingtestginggg
 
