@@ -1,11 +1,14 @@
 
 
-export const getAllNft = async (req, res) => {
-
+ const getAllNft = async (req, res) => {
+ res.send(console.log("hola"))
 }
 
-export const getIdNft = async (req, res) => {
-
+ const getIdNft = async (req, res) => {
+    res.send(console.log("hola"))
 }
 
-
+module.exports = {
+    getAllNft,
+    getIdNft
+}
