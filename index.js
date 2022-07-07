@@ -22,6 +22,9 @@ app.use((req, res, next) => {
   next()
 })
 
+
+// console.log(asdd)
+
 // routes
 app.use('/api', nftRoutes)
 // app.use('/registro',user)
