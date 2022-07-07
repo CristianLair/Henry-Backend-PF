@@ -7,8 +7,7 @@ Moralis.start({ serverUrl, appId , masterKey});
 
 
  const getAllNft = async (req, res) => {
-    const {type} = req.params
-      
+//luego optimizar para que lleguen 10 de cosas diferentes
       try {
           const options = { q: "cat" , chain: "bsc", filter: "name" };
           const NFTs = await Moralis.Web3API.token.searchNFTs(options);
@@ -27,7 +26,15 @@ Moralis.start({ serverUrl, appId , masterKey});
 //
 
 const getNameNft = async (req, res) => {
-    res.send(console.log("hola"))
+    const {name} = req.query;
+    try {
+        const options = { q: name , chain: "bsc", filter: "name" };
+        const NFTs = await Moralis.Web3API.token.searchNFTs(options);
+        const NftData = NFTs.result.map((nft) => JSON.parse(nft.metadata));
+        res.status(200).json(await NftData)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 
