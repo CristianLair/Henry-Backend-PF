@@ -3,9 +3,8 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
-const authUser = require('./userControllers/auth')
 const Usuario = require('./models/user')
-const user = require('./userControllers/usuario')
+const authUser = require('./controllers/authController')
 const cors = require('cors');
 
 
@@ -23,10 +22,13 @@ app.use((req, res, next) => {
   next()
 })
 
+
+// console.log(asdd)
+
 // routes
 app.use('/api', nftRoutes)
-app.use('/registro',user)
-app.use('/login',authUser)
+// app.use('/registro',user)
+// app.use('/login',authUser)
 
 //endpoint donde veremos mediante un json los usuarios
 

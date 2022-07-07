@@ -8,8 +8,9 @@ Moralis.start({ serverUrl, appId , masterKey});
 
  const getAllNft = async (req, res) => {
 //luego optimizar para que lleguen 10 de cosas diferentes
+      const name = req.params.name
       try {
-          const options = { q: "cat" , chain: "bsc", filter: "name" };
+          const options = { q: name , chain: "bsc", filter: "name" };
           const NFTs = await Moralis.Web3API.token.searchNFTs(options);
           const NftsResults = NFTs.result.map((nft)=> Number(nft.token_id));
           

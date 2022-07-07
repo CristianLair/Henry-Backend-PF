@@ -10,13 +10,12 @@ const appId = "TvlbElMKEQ3ozadXOqUAthnvVYSIKgNIIrllWHBi"
 const masterKey = 'bJ7z3DlllOjtYp1fRdf4ITSOXh6ewwvZEyR1nOQB'
 Moralis.start({ serverUrl, appId , masterKey});
 
-
 const createNft = require('../controllers/nftPostController')
 
 // GET all nfts
-router.get('/nfts/', async (req, res) => {
-  getAllNft()
-})
+router.get('/nfts/:name', getAllNft)
+  
+
    //
   // GET a single nft by token id
   router.get('/nft/:id', async (req, res) => {
@@ -26,6 +25,7 @@ router.get('/nfts/', async (req, res) => {
     res.status(200).json(NFTs)
   })
   
+    
   // POST a new nft
   router.post('/nft', createNft)
   
