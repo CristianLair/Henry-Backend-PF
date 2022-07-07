@@ -9,20 +9,23 @@ Moralis.start({ serverUrl, appId , masterKey});
  const getAllNft = async (req, res) => {
 //luego optimizar para que lleguen 10 de cosas diferentes
       const name = req.params.name
-      try {
-          const options = { q: name , chain: "bsc", filter: "name" };
-          const NFTs = await Moralis.Web3API.token.searchNFTs(options);
-          const NftsResults = NFTs.result.map((nft)=> Number(nft.token_id));
-          
-          const NftData = NFTs.result.map((nft) => JSON.parse(nft.metadata));
-          for (let i = 0; i < NftData.length; i++) {
-            Object.assign(NftData[i], {token_id: NftsResults[i]});
-          }
-          res.status(200).json(await NftData)
-          
-      } catch (error) {
-          console.log(error)
+      if(req.params.name) {
+        try {
+            const options = { q: name , chain: "bsc", filter: "name" };
+            const NFTs = await Moralis.Web3API.token.searchNFTs(options);
+            const NftsResults = NFTs.result.map((nft)=> Number(nft.token_id));
+            
+            const NftData = NFTs.result.map((nft) => JSON.parse(nft.metadata));
+            for (let i = 0; i < NftData.length; i++) {
+              Object.assign(NftData[i], {token_id: NftsResults[i]});
+            }
+            res.status(200).json(await NftData)
+            
+        } catch (error) {
+            console.log(error)
+        }
       }
+      
   }
 //
 
@@ -31,7 +34,12 @@ const getNameNft = async (req, res) => {
     try {
         const options = { q: name , chain: "bsc", filter: "name" };
         const NFTs = await Moralis.Web3API.token.searchNFTs(options);
+        const NftsResults = NFTs.result.map((nft)=> Number(nft.token_id));
+        
         const NftData = NFTs.result.map((nft) => JSON.parse(nft.metadata));
+        for (let i = 0; i < NftData.length; i++) {
+          Object.assign(NftData[i], {token_id: NftsResults[i]});
+        }
         res.status(200).json(await NftData)
     } catch (error) {
         console.log(error)
@@ -45,5 +53,6 @@ const getNameNft = async (req, res) => {
 
 module.exports = {
     getAllNft,
-    getIdNft
+    getIdNft,
+    getNameNft
 }
