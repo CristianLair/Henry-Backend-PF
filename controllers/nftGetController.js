@@ -13,7 +13,7 @@
         console.log(error)
     }
 }
-
+//
  const getIdNft = async (req, res) => {
     res.send(console.log("hola"))
 }

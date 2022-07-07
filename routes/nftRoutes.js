@@ -26,7 +26,7 @@ router.get('/nfts/', async (req, res) => {
         console.log(error)
     }
 } )
-  
+   //
   // GET a single nft
   router.get('/nft/:id')
   
