@@ -6,7 +6,6 @@ const nftRoutes = require('./routes/nftRoutes')
 
 
 
-
 const conectarDB = require('./db')
 conectarDB()
 
@@ -28,4 +27,3 @@ app.use((req, res, next) => {
         app.listen(process.env.PORT, () => {
             console.log('listening for request on port', process.env.PORT)
         })
-   
