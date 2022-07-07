@@ -4,8 +4,11 @@ const express = require('express')
 const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
 
+
+
 const conectarDB = require('./db')
 conectarDB()
+
 // express app
 const app = express()
 // middleware
