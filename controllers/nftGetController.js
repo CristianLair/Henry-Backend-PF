@@ -5,6 +5,7 @@
     const appId = "TvlbElMKEQ3ozadXOqUAthnvVYSIKgNIIrllWHBi"
     Moralis.start({ serverUrl, appId });
     try {
+        console.log(type)
         const options = { q: type , chain: "bsc", filter: "name" };
         const NFTs = await Moralis.Web3API.token.searchNFTs(options);
         res.send(NFTs)

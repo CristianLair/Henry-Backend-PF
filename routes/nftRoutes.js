@@ -12,14 +12,15 @@ Moralis.start({ serverUrl, appId , masterKey});
 const createNft = require('../controllers/nftPostController')
 
 // GET all nfts
-router.get('/nfts/:type', async (req, res) => {
+router.get('/nfts/', async (req, res) => {
   const {type} = req.params
     
     try {
-        const options = { q: type , chain: "bsc", filter: "name" };
+        const options = { q: "cat" , chain: "bsc", filter: "name" };
         const NFTs = await Moralis.Web3API.token.searchNFTs(options);
-        
-        res.send(NFTs)
+        const filterNfts = NFTs.result;
+        await filterNfts.map((data)=> data.metadata.metadata)
+        res.status(200).json(filterNfts)
         
     } catch (error) {
         console.log(error)
