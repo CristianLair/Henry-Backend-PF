@@ -17,11 +17,9 @@ router.get('/nfts/:type', async (req, res) => {
     try {
         const options = { q: type , chain: "bsc", filter: "name" };
         const NFTs = await Moralis.Web3API.token.searchNFTs(options);
-        const finalGet = NFTs.result.map(el => el.metadata.toString().replace(/ /g, ""))
-        const final = finalGet.map(el => el.replace(/(\r\n|\n|\r)/gm,""))
-        const finaldata = final.map(el => el.replace(/[\/\\]+/g,''))
-       
-        res.send(finaldata)
+        const finalGet = NFTs.result.map(el => JSON.parse(el.metadata))
+        
+        res.send(finalGet)
 
         
     } catch (error) {
@@ -30,8 +28,21 @@ router.get('/nfts/:type', async (req, res) => {
 } )
   
   // GET a single nft
-  router.get('/nft/:id')
+  router.get('/nft/:id', async (req, res) => {
+    const {id} = req.params
   
+      try {
+          const options = { q: type , chain: "bsc", filter: "id_token" };
+          const NFTs = await Moralis.Web3API.token.searchNFTs(options);
+          const finalGet = NFTs.result.map(el => JSON.parse(el.metadata))
+          
+          res.send(finalGet)
+  
+          
+      } catch (error) {
+          console.log(error)
+      }
+  } )
   // POST a new nft
   router.post('/nft', createNft)
   
