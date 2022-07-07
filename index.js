@@ -4,6 +4,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
 
+const cors = require('cors');
 
 
 const conectarDB = require('./db')
@@ -13,6 +14,7 @@ conectarDB()
 const app = express()
 // middleware
 app.use(express.json())
+app.use(cors())
 
 app.use((req, res, next) => {
   console.log(req.path, req.method)
@@ -20,7 +22,7 @@ app.use((req, res, next) => {
 })
 
 // routes
-//app.use('/api', nftRoutes)
+app.use('/api', nftRoutes)
 
 //conext to db
 
