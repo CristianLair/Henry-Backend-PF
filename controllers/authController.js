@@ -3,7 +3,7 @@ const bcryptjs =  require ('bcryptjs');
 const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-
+//
 exports.autenticarUsuario = async (req,res) => {
     const errores = validationResult(req)
 
