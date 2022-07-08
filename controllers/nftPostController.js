@@ -4,6 +4,7 @@
     const {name, description, image } = req.body;
 
     try {
+        
         const nft = await Nft.create({name, description, image})
         res.status(200).json(nft)
     } catch (error) {
