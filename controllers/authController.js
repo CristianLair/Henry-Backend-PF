@@ -4,7 +4,7 @@ const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 //
-exports.autenticarUsuario = async (req,res) => {
+const autenticarUsuario = async (req,res) => {
     const errores = validationResult(req)
 
     if(!errores.isEmpty()){
@@ -43,3 +43,5 @@ exports.autenticarUsuario = async (req,res) => {
         res.status(404).json({msg:"error"})
     }
 }
+
+module.exports = autenticarUsuario

@@ -8,9 +8,6 @@ router.post('/', [
     check('nombre', 'el nombre es obligatorio').not().isEmpty(),
     check('email', 'se debe ingresar un email').isEmail(),
     check('password','la contraseña debe tener al menos 4 caracteres').isLength({min:4})
-],
-
-usuarioController.createUsuario
-)
+],usuarioController.createUsuario)
 
 module.exports = router

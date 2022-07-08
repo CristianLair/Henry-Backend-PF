@@ -3,9 +3,9 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
-const authUser = require('./userControllers/auth')
+const authUser = require('./controllers/authController')
 const Usuario = require('./models/user')
-const user = require('./userControllers/usuario')
+const user = require('./controllers/usuarioController')
 const cors = require('cors');
 
 
