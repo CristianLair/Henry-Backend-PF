@@ -19,7 +19,7 @@ const getAllNft = async (req, res) => {
     if (NftData.length < 1) {
       return res
         .status(404)
-        .json({ error: "theres not NFTs in that parameter" });
+        .json({ error: "there's not NFTs in that parameter" });
     }
     res.status(200).json(await NftData);
   } else {
@@ -32,7 +32,6 @@ const getAllNft = async (req, res) => {
     }
   }
 };
-//
 
 const getNameNft = async (req, res) => {
   const { name } = req.query;
@@ -46,23 +45,36 @@ const getNameNft = async (req, res) => {
       Object.assign(NftData[i], { token_id: NftsResults[i] });
     }
     if (NftData.length < 1) {
-      return res.status(404).json({ error: "theres not NFTs in that name" });
+      return res.status(404).json({ error: "There's not NFTs in that name" });
     }
     res.status(200).json(await NftData);
   } else {
     if (!req.query.name && !req.params.name) {
-      return res.status(404).json({ error: "the input or parameter is empty" });
+      return res.status(404).json({ error: "The input or parameter is empty" });
     } else if (req.query.name.length < 3) {
       return res.status(404).json({
-        error: "the input must have a minimum length of 3 characters",
+        error: "The input must have a minimum length of 3 characters",
       });
     }
   }
 };
 
 const getIdNft = async (req, res) => {
-  res.send(console.log("hola"));
-};
+     const {id} = req.params    
+    try{
+        if(id){
+            const options = { q: id , chain: "bsc", filter: "id_token" };
+            const NFTs = await Moralis.Web3API.token.searchNFTs(options);
+            res.status(200).json(NFTs)
+        }else{
+          return res.status(404).send("There is any NFT with that ID") 
+        }
+        }catch(e){
+            console.log(e)
+     }    
+}
+
+
 
 module.exports = {
   getAllNft,

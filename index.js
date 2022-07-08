@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 })
 
 
-// console.log(asdd)
+
 
 // routes
 app.use('/api', nftRoutes)
