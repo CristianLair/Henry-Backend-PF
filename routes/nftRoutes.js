@@ -28,6 +28,8 @@ router.get("/nft/:id", async (req, res) => {
 // POST a new nft
 router.post("/nft", createNft);
 
+
+// router.get("/atribute",)
 //testingtestingtestginggg
 
 //testingtestingtestginggg
