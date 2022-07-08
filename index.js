@@ -28,8 +28,8 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/api', nftRoutes)
-// app.use('/registro',user)
-// app.use('/login',authUser)
+/app.use('/registro',user)
+ app.use('/login',authUser)
 
 //endpoint donde veremos mediante un json los usuarios
 
