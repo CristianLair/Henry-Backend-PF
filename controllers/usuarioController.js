@@ -4,7 +4,7 @@ const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-exports.createUsuario = async(req,res) => {
+const createUsuario = async(req,res) => {
 
 const errores = validationResult(req)
 
@@ -19,7 +19,7 @@ try {
 
 let usuario = User.findOne({email})//busco en la bd y si encuentra un email no lo deja registrarse nuevamente
 
-if(usuario){
+if(!usuario){
     return res.status(400).json({msg:"Email ya registrado en la base de datos,seleccione otro"})
 }
 // si el email no existe en la bd procede a la creacion del usuario
@@ -51,3 +51,5 @@ jwt.sign(dataFirmada, `${process.env.FIRMA}`,{
     res.status(404).send("Error")
 }
 }
+
+module.exports = createUsuario

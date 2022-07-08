@@ -3,8 +3,14 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
+
+const authUser = require('./controllers/authController')
+const Usuario = require('./models/user')
+const user = require('./controllers/usuarioController')
+
 const Usuario = require('./models/user')
 const authUser = require('./controllers/authController')
+
 const cors = require('cors');
 
 
@@ -41,9 +47,9 @@ app.get('/usuariosRegistrados', (req, res) => {
 })
 
 //conext to db
-
-        app.listen(process.env.PORT, () => {
-            console.log('listening for request on port', process.env.PORT)
+const PORT = process.env.PORT || 4000
+        app.listen(PORT, () => {
+            console.log('listening for request on port',PORT)
         })
 
 
