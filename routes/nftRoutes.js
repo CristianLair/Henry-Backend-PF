@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 const Moralis = require("moralis/node");
-const { getAllNft, getNameNft } = require("../controllers/nftGetController");
+const { getAllNft, getNameNft, getIdNft } = require("../controllers/nftGetController");
 const serverUrl = "https://hzgmh0bhktiz.usemoralis.com:2053/server";
 const appId = "TvlbElMKEQ3ozadXOqUAthnvVYSIKgNIIrllWHBi";
 const masterKey = "bJ7z3DlllOjtYp1fRdf4ITSOXh6ewwvZEyR1nOQB";
@@ -12,20 +12,10 @@ Moralis.start({ serverUrl, appId, masterKey });
 
 const createNft = require("../controllers/nftPostController");
 
-// GET all nfts
+
 router.get("/nfts/:name", getAllNft);
 router.get("/nfts/", getNameNft);
-
-//
-// GET a single nft by token id
-router.get("/nft/:id", async (req, res) => {
-  const { id } = req.params;
-  const options = { q: id, chain: "bsc", filter: "name" };
-  const NFTs = await Moralis.Web3API.token.searchNFTs(options);
-  res.status(200).json(NFTs);
-});
-
-// POST a new nft
+router.get("/nfts/:id", getIdNft);
 router.post("/nft", createNft);
 
 
