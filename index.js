@@ -6,7 +6,7 @@ const nftRoutes = require('./routes/nftRoutes')
 const user = require('./controllers/usuarioController')
 const Usuario = require('./models/user')
 const authUser = require('./controllers/authController')
-const cors = require('cors');
+
 
 
 const conectarDB = require('./db')
@@ -14,14 +14,28 @@ conectarDB()
 
 // express app
 const app = express()
+
+app.name = 'API'
+
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(cookieParser());
+app.use(morgan('dev'));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  next();
+});
+
+app.use('/')
+
 // middleware
 app.use(express.json())
 
 
-let corsOptions = {
-  origin: 'http://localhost:3000/',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+
 
 
 app.use((req, res, next) => {
@@ -33,9 +47,9 @@ app.use((req, res, next) => {
 
 
 // routes
-app.use('/api',cors(corsOptions), nftRoutes)
-/app.use('/registro',cors(corsOptions),user)
- app.use('/login',cors(corsOptions),authUser)
+app.use('/api', nftRoutes)
+app.use('/registro',user)
+ app.use('/login',authUser)
 
 //endpoint donde veremos mediante un json los usuarios
 
