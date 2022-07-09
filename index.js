@@ -16,7 +16,13 @@ conectarDB()
 const app = express()
 // middleware
 app.use(express.json())
-app.use(cors())
+
+
+let corsOptions = {
+  origin: 'http://localhost:3000/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 
 app.use((req, res, next) => {
   console.log(req.path, req.method)
@@ -27,9 +33,9 @@ app.use((req, res, next) => {
 
 
 // routes
-app.use('/api', nftRoutes)
-/app.use('/registro',user)
- app.use('/login',authUser)
+app.use('/api',cors(corsOptions), nftRoutes)
+/app.use('/registro',cors(corsOptions),user)
+ app.use('/login',cors(corsOptions),authUser)
 
 //endpoint donde veremos mediante un json los usuarios
 
