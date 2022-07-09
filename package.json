@@ -20,6 +20,7 @@
     "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.2",
-    "moralis": "^1.8.1"
+    "moralis": "^1.8.1",
+    "uuid": "^8.3.2"
   }
 }
