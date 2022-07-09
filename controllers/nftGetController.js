@@ -1,12 +1,13 @@
 // const { all } = require("../routes/nftRoutes");
 const Moralis = require("moralis/node");
+const { stringify } = require("uuid");
 const serverUrl = "https://hzgmh0bhktiz.usemoralis.com:2053/server";
 const appId = "TvlbElMKEQ3ozadXOqUAthnvVYSIKgNIIrllWHBi";
 const masterKey = "bJ7z3DlllOjtYp1fRdf4ITSOXh6ewwvZEyR1nOQB";
 Moralis.start({ serverUrl, appId, masterKey });
 
 //filtrar los nfts que no tengan imagen quye no paarecescan ni gif
-// que no se repita la imagen, como hacer que no se repita los elementros de un array// sin descripcion
+// que no se repita la imagen, como hacer que no se repita los elementros de un array
 
 //params vacio traiga bichos aleatorios, si tarda mucho meten un loading
 //
@@ -42,7 +43,7 @@ const getAllNft = async (req, res) => {
         .status(404)
         .json({ error: "there's not NFTs in that parameter" });
     }
-    res.status(200).json(await requireData);
+    res.status(200).json(requireData);
   } else {
     if (!req.query.name && !req.params.name) {
       // const options = { q: name, chain: "bsc", filter: "name" };
@@ -69,10 +70,24 @@ const getNameNft = async (req, res) => {
     for (let i = 0; i < NftData.length; i++) {
       Object.assign(NftData[i], { token_id: NftsResults[i] });
     }
-    if (NftData.length < 1) {
+    const requireData = NftData.filter((nft) => {
+      let link = nft.image ? nft.image.slice(0, 4) : "ipfs";
+      if (nft.description === "" || link === "ipfs") {
+        return false;
+      }
+      return true;
+    }).map((nft) => {
+      return {
+        token_id: nft.token_id,
+        image: nft.image,
+        description: nft.description,
+        name: nft.name,
+      };
+    });
+    if (requireData.length < 1) {
       return res.status(404).json({ error: "There's not NFTs in that name" });
     }
-    res.status(200).json(await NftData);
+    res.status(200).json(requireData);
   } else {
     if (!req.query.name && !req.params.name) {
       return res.status(404).json({ error: "The input or parameter is empty" });
@@ -88,9 +103,38 @@ const getIdNft = async (req, res) => {
   const { id } = req.params;
   try {
     if (id) {
-      const options = { q: id, chain: "bsc", filter: "id_token" };
+      const options = { q: id, chain: "bsc", filter: "description" };
       const NFTs = await Moralis.Web3API.token.searchNFTs(options);
-      res.status(200).json(NFTs);
+    const NftsResults = NFTs.result.map((nft) => Number(nft.token_id));
+
+    const NftData = NFTs.result.map((nft) => JSON.parse(nft.metadata));
+    for (let i = 0; i < NftData.length; i++) {
+      Object.assign(NftData[i], { token_id: NftsResults[i] });
+    }
+    const requireData = NftData.filter((nft) => {
+      let link = nft.image ? nft.image.slice(0, 4) : "ipfs";
+      let link2 = nft.image ? nft.image.slice(0, 4) : "data";
+      // let token_idString = toString(nft.token_id)
+      // let params_idString = toString(id)
+      // console.log(Number(nft.token_id))
+      // console.log(token_idString)
+      // console.log(params_idString)
+      if (nft.description === "" || link === "ipfs" || link2 === "data" || typeof(nft.name) === "number" ||typeof(nft.description) === "number"|| nft.token_id !== Number(req.params.id)) {
+        return false;
+      }
+      return true;
+    }).map((nft) => {
+      return {
+        token_id: nft.token_id,
+        image: nft.image,
+        description: nft.description,
+        name: nft.name,
+      };
+    });
+
+
+      
+      res.status(200).json(requireData);
     } else {
       return res.status(404).send("There is any NFT with that ID");
     }

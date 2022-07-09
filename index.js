@@ -6,8 +6,9 @@ const nftRoutes = require('./routes/nftRoutes')
 const user = require('./controllers/usuarioController')
 const Usuario = require('./models/user')
 const authUser = require('./controllers/authController')
-
-
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const morgan = require('morgan')
 
 const conectarDB = require('./db')
 conectarDB()
@@ -29,7 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/')
+// app.use('/')
 
 // middleware
 app.use(express.json())
