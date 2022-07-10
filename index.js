@@ -30,6 +30,7 @@ app.use((req, res, next) => {
   next();
 })
 
+// app.use('/')
 
 // middleware
 app.use(express.json())
