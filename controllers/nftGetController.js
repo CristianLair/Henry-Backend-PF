@@ -187,3 +187,4 @@ module.exports = {
   getIdNft,
   getNameNft,
 };
+
