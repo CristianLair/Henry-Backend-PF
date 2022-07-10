@@ -6,6 +6,10 @@ const nftRoutes = require('./routes/nftRoutes')
 const user = require('./controllers/usuarioController')
 const Usuario = require('./models/user')
 const authUser = require('./controllers/authController')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const morgan = require('morgan')
+
 
 
 
@@ -16,6 +20,7 @@ conectarDB()
 const app = express()
 
 app.name = 'API'
+
 
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -29,7 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/')
+//app.use('/')
 
 // middleware
 app.use(express.json())
