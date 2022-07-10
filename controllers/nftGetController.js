@@ -63,7 +63,7 @@ const getAllNft = async (req, res) => {
 
 
         var dbnfts = await getDbNfts()
-         dbnfts.map((nft) => {
+         const DBFILTERED = dbnfts.map((nft) => {
           return {
             token_id: nft._id,
             image: nft.image,
@@ -71,7 +71,7 @@ const getAllNft = async (req, res) => {
             name: nft.name,
           };
         });
-        const finalContent = [...requireData, ...dbnfts]
+        const finalContent = [...requireData, ...DBFILTERED]
         res.status(200).json(finalContent);
 
 
