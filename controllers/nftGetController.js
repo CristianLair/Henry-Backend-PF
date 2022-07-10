@@ -21,21 +21,21 @@ const getAllNft = async (req, res) => {
     const options = { q: name, chain: "bsc", filter: "description" };
     const NFTs = await Moralis.Web3API.token.searchNFTs(options);
     
-    function arrayAcumulatorNft() {
+    // function arrayAcumulatorNft() {
       const NftsIds = NFTs.result.map((nft) => Number(nft.token_id));
       const NftData = NFTs.result.map((nft) => JSON.parse(nft.metadata));
       for (let i = 0; i < NftData.length; i++) {
         Object.assign(NftData[i], { token_id: NftsIds[i] });
       }
     
-      FinalArrayNft = [...FinalArrayNft, ...NftData];
+      // FinalArrayNft = [...FinalArrayNft, ...NftData];
   
       
-      if(FinalArrayNft.length < 300) {
-        NFTs.next();
-        arrayAcumulatorNft();
-      } else {
-        const requireData = FinalArrayNft.filter((nft) => {
+      // if(FinalArrayNft.length < 300) {
+      //   NFTs.next();
+      //   arrayAcumulatorNft();
+      // } else {
+        const requireData = NftData.filter((nft) => {
           let link = nft.image ? nft.image.slice(0, 4) : "ipfs";
           let link2 = nft.image ? nft.image.slice(0, 4) : "data";
           if (nft.description === "" ||
@@ -62,14 +62,22 @@ const getAllNft = async (req, res) => {
         }
 
 
-        const dbnfts = getDbNfts() 
+        var dbnfts = await getDbNfts()
+         dbnfts.map((nft) => {
+          return {
+            token_id: nft._id,
+            image: nft.image,
+            description: nft.description,
+            name: nft.name,
+          };
+        });
         const finalContent = [...requireData, ...dbnfts]
         res.status(200).json(finalContent);
 
 
-      }
-    }
-    arrayAcumulatorNft()
+      // }
+    // }
+    // arrayAcumulatorNft()
 
   } else {
     if (!req.query.name && !req.params.name) {
