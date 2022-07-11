@@ -5,6 +5,7 @@ const serverUrl = "https://hzgmh0bhktiz.usemoralis.com:2053/server";
 const appId = "TvlbElMKEQ3ozadXOqUAthnvVYSIKgNIIrllWHBi";
 const masterKey = "bJ7z3DlllOjtYp1fRdf4ITSOXh6ewwvZEyR1nOQB";
 Moralis.start({ serverUrl, appId, masterKey });
+const Nft = require('mongoose')
 
 //filtrar los nfts que no tengan imagen quye no paarecescan ni gif
 // que no se repita la imagen, como hacer que no se repita los elementros de un array
@@ -103,7 +104,7 @@ const getIdNft = async (req, res) => {
   const { id } = req.params;
   try {
     if (id) {
-      const options = { q: id, chain: "bsc", filter: "description" };
+      const options = { q: id, chain: "bsc", filter: "name" };
       const NFTs = await Moralis.Web3API.token.searchNFTs(options);
     const NftsResults = NFTs.result.map((nft) => Number(nft.token_id));
 
@@ -114,12 +115,8 @@ const getIdNft = async (req, res) => {
     const requireData = NftData.filter((nft) => {
       let link = nft.image ? nft.image.slice(0, 4) : "ipfs";
       let link2 = nft.image ? nft.image.slice(0, 4) : "data";
-      // let token_idString = toString(nft.token_id)
-      // let params_idString = toString(id)
-      // console.log(Number(nft.token_id))
-      // console.log(token_idString)
-      // console.log(params_idString)
-      if (nft.description === "" || link === "ipfs" || link2 === "data" || typeof(nft.name) === "number" ||typeof(nft.description) === "number"|| nft.token_id !== Number(req.params.id)) {
+      if (nft.description === "" || link === "ipfs" || link2 === "data" || typeof(nft.name) === "number" ||typeof(nft.description) === "number"|| nft.token_id !== Number(req.params.id))
+      {
         return false;
       }
       return true;
