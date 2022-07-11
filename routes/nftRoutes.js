@@ -15,13 +15,15 @@ const createNft = require("../controllers/nftPostController");
 // GET all nfts
 router.get("/nfts/:name", getAllNft);
 router.get("/nfts/", getNameNft);
+router.get("/nft/:id", getIdNft);
+router.post("/nft", createNft);
 
 //
 // GET a single nft by token id
-router.get("/nft/:id", getIdNft)
+// router.get("/nft/:id", getIdNft)
 
 // POST a new nft
-router.post("/nft", createNft);
+// router.post("/nft", createNft);
 
 //testingtestingtestginggg
 

@@ -10,9 +10,6 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 
-
-
-
 const conectarDB = require('./db')
 conectarDB()
 
@@ -34,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//app.use('/')
+// app.use('/')
 
 // middleware
 app.use(express.json())
