@@ -9,18 +9,25 @@ Moralis.start({ serverUrl, appId, masterKey });
 const getNftsComplete = async (req, res ) => {
     try {
 
-        let cursor = null;
+        const cursor = req.query.cursor ? req.query.cursor : null;
+        
+       
         const respuesta = [];
-        let cont = 0;
-
-        do {
+        
+        
             const options = { q: 'cat', chain: "bsc", filter: "global", cursor : cursor };
             const NFTs = await Moralis.Web3API.token.searchNFTs(options);
+            respuesta.push({
+                page : NFTs.page,
+                totalPage : Math.ceil(NFTs.total / NFTs.page_size),
+                cursor : NFTs.cursor
+            })
             console.log(
                 `Got page ${NFTs.page} of ${Math.ceil(
                   NFTs.total / NFTs.page_size
                 )}, ${NFTs.total} total`
               );
+              
               for (let nft of NFTs.result) {
                 const metadata = JSON.parse(nft.metadata);
                 respuesta.push({
@@ -28,16 +35,18 @@ const getNftsComplete = async (req, res ) => {
                     token_address : nft.token_address,
                     name : metadata.name,
                     description : metadata.description,
-                    image : metadata.image
+                    image : metadata.image,
+                    
+                    
 
                 })
               }
-              cursor = NFTs.cursor;
               
-              cont ++;
-              console.log(cont)
+              
+              
+              
 
-        }while(cont !== 3)
+        
 
         console.log(respuesta.length)
         res.send(respuesta)
