@@ -55,12 +55,11 @@ const getAllNft = async (req, res) => {
           };
         });
     
-        if (requireData.length < 1) {
-          return res
-            .status(404)
-            .json({ error: "there's not NFTs in that parameter" });
+        
+        const getDbNfts = async => {
+          const allnfts = nftSchema.find({}).sort({createdAt: -1})
+          return allnfts;
         }
-
 
         var dbnfts = await getDbNfts()
          const DBFILTERED = dbnfts.map((nft) => {
@@ -72,8 +71,14 @@ const getAllNft = async (req, res) => {
           };
         });
         const finalContent = [...requireData, ...DBFILTERED]
+        console.log(finalContent)
         res.status(200).json(finalContent);
 
+        if (finalContent.length < 1) {
+          return res
+            .status(404)
+            .json({ error: "there's not NFTs in that parameter" });
+        }
 
       // }
     // }
@@ -94,10 +99,7 @@ const getAllNft = async (req, res) => {
   }
 };
 
-const getDbNfts = async => {
-  const allnfts = nftSchema.find({}).sort({createdAt: -1})
-  return allnfts;
-}
+
 
 
 
