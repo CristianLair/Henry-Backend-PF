@@ -53,7 +53,7 @@ const getAllNft = async (req, res) => {
         )
           continue;
         respuesta.push({
-          id: nft.token_id,
+          _id: nft.token_id,
           token_address: nft.token_address,
           name: metadata.name,
           description: metadata.description,
@@ -68,7 +68,7 @@ const getAllNft = async (req, res) => {
 
       const DBFILTERED = dbnfts.map((nft) => {
         return {
-          token_id: nft._id,
+          _id: nft._id,
           image: nft.image,
           description: nft.description,
           name: nft.name,
@@ -83,8 +83,6 @@ const getAllNft = async (req, res) => {
 
       res.status(200).json(finalContent);
 
-      // console.log(finalContent);
-
       if (finalContent.length < 1) {
         return res
           .status(404)
@@ -96,10 +94,6 @@ const getAllNft = async (req, res) => {
     } catch (error) {
       console.log(error);
     }
-
-    // }
-    // }
-    // arrayAcumulatorNft()
   } else {
     if (!req.query.name && !req.params.name) {
       // const options = { q: name, chain: "bsc", filter: "name" };
@@ -143,7 +137,9 @@ const getNameNft = async (req, res) => {
 
       for (let nft of NFTs.result) {
         const metadata = JSON.parse(nft.metadata);
-        const nulll = metadata.description ? metadata.description.slice(0, 4) : null;
+        const nulll = metadata.description
+          ? metadata.description.slice(0, 4)
+          : null;
         const link = metadata.image ? metadata.image.slice(0, 4) : null;
         if (
           link === "ipfs" ||
@@ -156,7 +152,7 @@ const getNameNft = async (req, res) => {
         )
           continue;
         respuesta.push({
-          id: nft.token_id,
+          _id: nft.token_id,
           token_address: nft.token_address,
           name: metadata.name,
           description: metadata.description,
@@ -164,36 +160,27 @@ const getNameNft = async (req, res) => {
         });
       }
       const getDbNfts = (async) => {
-        const allnfts = nftSchema.find({ name:{$regex:'.*' + req.query.name + '*.'}}).sort({ createdAt: -1 });
+        const allnfts = nftSchema
+          .find({ name: { $regex: ".*" + req.query.name + "*." } })
+          .sort({ createdAt: -1 });
         return allnfts;
       };
       var dbnfts = await getDbNfts();
 
       const DBFILTERED = dbnfts.map((nft) => {
         return {
-          token_id: nft._id,
+          _id: nft._id,
           image: nft.image,
           description: nft.description,
           name: nft.name,
         };
       });
-      // const DBFILTERED = dbdata.filter((nft) => {
-      //   let nftname = String.toString(nft.name)
-      //   if (nftname.indexOf(String.toString(name) !== -1)) {
-      //     return false;
-      //   }
-      //   return true;
-      // });
-      console.log(DBFILTERED)
+
       if (respuesta[0].page === 0) {
         var finalContent = [...respuesta, ...DBFILTERED];
       } else {
         var finalContent = [...respuesta];
       }
-
-      // res.status(200).json(finalContent);
-
-      // console.log(finalContent);
 
       if (finalContent.length < 1) {
         return res
@@ -201,13 +188,10 @@ const getNameNft = async (req, res) => {
           .json({ error: "there're not NFTs in that query" });
       }
 
-      console.log(finalContent.length);
       res.status(200).json(finalContent);
     } catch (error) {
       console.log(error);
     }
-
-    // res.status(200).json(finalContent);
   } else {
     if (!req.query.name && !req.params.name) {
       return res.status(404).json({ error: "The input or parameter is empty" });
