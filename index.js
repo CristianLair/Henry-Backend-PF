@@ -9,10 +9,10 @@ const authUser = require('./controllers/authController')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
-
+const pruebaRoles = require('./controllers/InitialSetup')
 const conectarDB = require('./db')
 conectarDB()
-
+pruebaRoles()
 // express app
 const app = express()
 

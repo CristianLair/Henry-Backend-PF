@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-
-
+const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
 const userSchema =  mongoose.Schema({
     nombre: {
         type: "string",
@@ -20,6 +20,14 @@ const userSchema =  mongoose.Schema({
         require:true,
         trim:true
     },
+
+    roles: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Roles",
+        },
+        { timestamps: true, versionKey: false },
+      ],
     registro:{
         type: Date,
         default: Date.now()
@@ -30,6 +38,18 @@ const userSchema =  mongoose.Schema({
     {
         timestamps:true
     })
+
+    userSchema.pre("save", async function (next) {
+        if (!this.isModified("password")) {
+          next(); //si no se cambio la contraseña no se hace nada
+        }
+        const salt = await bcrypt.genSalt(10); //rondas
+        this.password = await bcrypt.hash(this.password, salt);
+      });
+      
+      userSchema.methods.comprobarPassword = async function (passwordFormulario) {
+        return await bcrypt.compare(passwordFormulario, this.password); //compara las pasword
+      }
 
 module.exports =  mongoose.model('usuarios', userSchema)
 
