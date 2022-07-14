@@ -17,6 +17,7 @@ const {deleteUser} = require('./controllers/Admin/admin')
 const {getUserById}  = require('./controllers/Admin/admin')
 const {getUsersDb} = require('./controllers/Admin/admin')
 const {updateAdminById} = require('./controllers/Admin/admin')
+const changePassword = require('./controllers/authController')
 conectarDB()
 pruebaRoles()
 // express app
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 app.use('/api', nftRoutes)
 app.use('/registro',user)
 app.use('/login',authUser)
+app.get('/:id/changePassword',changePassword)
 
 // Rutas para el admin
 app.get('/admin/verify', verifyAdmin)
