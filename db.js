@@ -14,7 +14,7 @@ const conectarDB = async () => {
                 if(err){
                     console.log("error en la conexion")
                 }else{
-                    console.log("base de datos conectada correctamente")
+                    console.log("base de datos conectada re picante")
                 }
               } 
               
