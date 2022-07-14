@@ -5,7 +5,7 @@ const {check}  = require('express-validator')
 
 router.post('/', [
     check('email', 'se debe ingresar un email valido').isEmail().notEmpty(),
-    check('password', 'el password debe contener al menos 6 caracteres').isLength({min:4}),
+    check('password', 'el password debe contener al menos 4 caracteres').isLength({min:4}),
 ],
 
 authController.autenticarUsuario
