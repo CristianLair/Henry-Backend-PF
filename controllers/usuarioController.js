@@ -3,7 +3,7 @@ const bcryptjs =  require ('bcryptjs');
 const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-
+const Role = require('../models/Role')
 const createUsuario = async(req,res) => {
 
 const errores = validationResult(req)
@@ -13,7 +13,7 @@ if(!errores.isEmpty()){
     return res.status(400).json({errores: errores.array()})
 }
 
-const {email,password} = req.body
+const {email,password,roles} = req.body
 
 try {
 
@@ -22,12 +22,22 @@ let usuario = User.findOne({email})//busco en la bd y si encuentra un email no l
 if(!usuario){
     return res.status(400).json({msg:"Email ya registrado en la base de datos,seleccione otro"})
 }
+
+
 // si el email no existe en la bd procede a la creacion del usuario
 usuario = new User(req.body)
 //usamos bcryptjs para el hasheo de la pass => el 10 significa 10 vueltas le da al user para hashearlo.
 const salt = await bcryptjs.genSalt(10)
 usuario.password = await bcryptjs.hash(password,salt) // asignacion del hash a la password para evitar manipulacion de datos en el login del usuario
 console.log(usuario.password)
+if(roles){
+    const foundRoles = await Role.find({name:{$in:roles}})
+    usuario.roles = foundRoles.map(role=> role._id)
+}else{
+    const role = await Role.findOne({name:"user"})
+    usuario.roles = [role._id]
+}   
+
 await usuario.save()
 
 //Creamos y firmamos con JWT 
