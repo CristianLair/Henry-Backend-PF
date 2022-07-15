@@ -83,7 +83,12 @@ const getNftId = async (req, res) => {
                 token_id: id,
                 chain: "eth",
             };
+            const option2 = {
+                address : token_address,
+                chain : 'eth'
+            }
           const nft = await Moralis.Web3API.token.getTokenIdMetadata(options);
+          const priceNft = await Moralis.Web3API.token.getTokenPrice(options2)
           const metadata = JSON.parse(nft.metadata);
           const respuesta = {
             token_address : nft.token_address,
@@ -96,7 +101,7 @@ const getNftId = async (req, res) => {
             image : metadata.image
 
           }
-            res.send(respuesta)
+            res.send(priceNft)
         }
 
     
@@ -106,8 +111,78 @@ const getNftId = async (req, res) => {
     }
 }
 
+const getOneCollection = async (req, res) => {
+    try {
+        const {address} = req.query;
+        const cursor = req.query.cursor ? req.query.cursor : null;
+
+        const respuesta = [];
+        const options = {
+            address: address,
+            chain: "eth",
+            cursor : cursor
+          };
+          const NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
+          respuesta.push({
+            page : NFTs.page,
+            totalPage : Math.ceil(NFTs.total / NFTs.page_size),
+            cursor : NFTs.cursor,
+            totalItems : NFTs.total
+        })
+        console.log(
+            `Got page ${NFTs.page} of ${Math.ceil(
+              NFTs.total / NFTs.page_size
+            )}, ${NFTs.total} total`
+          );
+
+          for (let nft of NFTs.result) {
+            const metadata = JSON.parse(nft.metadata);
+            const link =  metadata.image ? metadata.image.slice(0, 4) : null;
+            if(link === 'ipfs' || link === 'data' || link === null ) continue;
+        
+            respuesta.push({
+                _id: nft.token_id,
+                token_address : nft.token_address,
+                collection : nft.name,
+                name : metadata.name,
+                description : metadata.description,
+                image : metadata.image,
+                
+                
+
+            })
+          }
+
+          res.send(respuesta)
+        
+    } catch (error) {
+        res.send(error)
+        
+    }
+    
+}
+
+const getNFTPrice = async (req, res) => {
+    try {
+        //Get token price on PancakeSwap v2 BSC
+    const options = {
+        address: "0xd31fC221D2b0E0321C43E9F6824b26ebfFf01D7D",
+        chain: 'eth'
+        
+        
+    };
+    const price = await Moralis.Web3API.token.getTokenPrice(options);
+    res.send(price)
+    } catch (error) {
+        res.send(error)
+    }
+}
+
 module.exports = {
     getNftsComplete,
-    getNftId
+    getNftId,
+    getOneCollection,
+    getNFTPrice
+    
   };
   
