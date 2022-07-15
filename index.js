@@ -57,9 +57,9 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/api', nftRoutes)
-app.use('/registro',user)
-app.use('/login',authUser)
-app.get('/:id/changePassword',changePassword)
+app.use('/api/registro',user)
+app.use('/api/login',authUser)
+app.get('/api/:id/changePassword',changePassword)
 
 // Rutas para el admin
 app.get('/admin/verify', verifyAdmin)
