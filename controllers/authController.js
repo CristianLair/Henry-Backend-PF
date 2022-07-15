@@ -20,7 +20,8 @@ const autenticarUsuario = async (req,res) => {
         }
 
         const passwordCorrect = await bcryptjs.compare(password,usuario.password)
-
+        console.log(password)
+        console.log(usuario.password,"aca")
         if(!passwordCorrect){
             return res.status(400).json({msg:'contraseña incorrecta'})
         }

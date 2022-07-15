@@ -9,10 +9,17 @@ const authUser = require('./controllers/authController')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
-
+const pruebaRoles = require('./controllers/InitialSetup')
+const {verifyToken} = require('./middleweare/VerifyToken')
+const {verifyAdmin}  = require('./middleweare/VerifyAdmin')
 const conectarDB = require('./db')
+const {deleteUser} = require('./controllers/Admin/admin')
+const {getUserById}  = require('./controllers/Admin/admin')
+const {getUsersDb} = require('./controllers/Admin/admin')
+const {updateAdminById} = require('./controllers/Admin/admin')
+const changePassword = require('./controllers/authController')
 conectarDB()
-
+pruebaRoles()
 // express app
 const app = express()
 
@@ -52,17 +59,19 @@ app.use((req, res, next) => {
 // routes
 app.use('/api', nftRoutes)
 app.use('/registro',user)
- app.use('/login',authUser)
+app.use('/login',authUser)
+app.get('/:id/changePassword',changePassword)
+
+// Rutas para el admin
+app.get('/admin/verify', verifyAdmin)
+app.get('/admin/users', getUsersDb)
+app.delete('/admin/delete',deleteUser)
+app.get('/admin/:id',getUserById)
+app.put('/admin/edit/:email', updateAdminById)
 
 //endpoint donde veremos mediante un json los usuarios
 
-app.get('/usuariosRegistrados', (req, res) => {
-  Usuario.find()
-      .then((result) => {
-          res.send(result)
-      })
-      .catch(err => res.status(404).send(err));
-})
+
 
 //conext to db
 const PORT = process.env.PORT || 4000

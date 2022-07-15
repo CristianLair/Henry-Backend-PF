@@ -27,14 +27,14 @@ usuario = new User(req.body)
 //usamos bcryptjs para el hasheo de la pass => el 10 significa 10 vueltas le da al user para hashearlo.
 const salt = await bcryptjs.genSalt(10)
 usuario.password = await bcryptjs.hash(password,salt) // asignacion del hash a la password para evitar manipulacion de datos en el login del usuario
-
+console.log(usuario.password)
 await usuario.save()
 
 //Creamos y firmamos con JWT 
 
 const dataFirmada = {
     usuario:{
-        _id: usuario.id // usamos _id ya que mongo genera los usuarios por defecto con el _id
+        _id: usuario._id // usamos _id ya que mongo genera los usuarios por defecto con el _id
     }
 }
 

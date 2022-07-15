@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-
-
+const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
 const userSchema =  mongoose.Schema({
     nombre: {
         type: "string",
@@ -20,6 +20,14 @@ const userSchema =  mongoose.Schema({
         require:true,
         trim:true
     },
+
+    roles: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "Roles",
+        },
+        { timestamps: true, versionKey: false },
+      ],
     registro:{
         type: Date,
         default: Date.now()
@@ -30,6 +38,8 @@ const userSchema =  mongoose.Schema({
     {
         timestamps:true
     })
+
+   
 
 module.exports =  mongoose.model('usuarios', userSchema)
 
