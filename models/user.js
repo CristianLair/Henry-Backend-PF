@@ -20,6 +20,14 @@ const userSchema =  mongoose.Schema({
         require:true,
         trim:true
     },
+    username: {
+        type: String,
+    },
+    lastName:{type:String},
+    description: {type:String},
+    profilePic: {type:String},
+    token: {type: String},
+    googleID: {type: String},
 
     roles: [
         {
