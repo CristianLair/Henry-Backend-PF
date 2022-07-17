@@ -72,8 +72,8 @@ app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
 //endpoint donde veremos mediante un json los usuarios
 
 //user
-router.get("/profile/:token", getProfile);
-router.put("/profile/:token", updatedProfileById)
+app.get("/profile/:token", getProfile);
+app.put("/profile/:token", updatedProfileById)
 
 //conext to db
 const PORT = process.env.PORT || 4000
