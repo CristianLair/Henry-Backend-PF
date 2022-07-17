@@ -238,8 +238,35 @@ const getIdNft = async (req, res) => {
   }
 };
 
+const findNftIdDb = async () => {
+    const idsNft = await nftSchema.findById(id)
+    return idsNft
+}
+
+(async function() {
+  await Moralis.initPlugins();
+})();
+
+const getPayment = async (req,res) => {
+  try{
+    let response = await Moralis.Plugins.fiat.buy(undefined, {disableTriggers: true});
+    res.status(200).send(response.data)
+  }catch(e){
+    console.log(e)
+  }
+
+
+// document.getElementById('myIframe').style.display = 'block';
+// document.getElementById('myIframe').src = response.data;
+   
+}
+
+
+
 module.exports = {
   getAllNft,
   getIdNft,
   getNameNft,
+  findNftIdDb,
+  getPayment
 };
