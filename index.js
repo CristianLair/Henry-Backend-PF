@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+const authRouter = require("./routes/googleRoutes");
 const express = require('express')
 const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
@@ -61,7 +61,7 @@ app.use('/api', nftRoutes)
 app.use('/api/registro',user,checkRolesExisted)
 app.use('/api/login',authUser)
 app.get('/api/:id/changePassword',changePassword)
-
+app.use("/auth", authRouter);
 // Rutas para el admin
 app.get('/admin/verify', verifyAdmin,isAdmin)
 app.get('/admin/users', verifyAdmin,getUsersDb)
@@ -72,8 +72,8 @@ app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
 //endpoint donde veremos mediante un json los usuarios
 
 //user
-router.get("/profile/:token", getProfile);
-router.put("/profile/:token", updatedProfileById)
+app.get("/profile/:token", getProfile);
+app.put("/profile/:token", updatedProfileById)
 
 //conext to db
 const PORT = process.env.PORT || 4000

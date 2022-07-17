@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 const Moralis = require("moralis/node");
-const { getAllNft, getNameNft } = require("../controllers/nftGetController");
+const { getAllNft, getNameNft, getIdNft } = require("../controllers/nftGetController");
 const {getNftsComplete, getNftId, getOneCollection, getNFTPrice} = require('../controllers/pruebaController')
 const {getNFTCollection} = require('../controllers/collectionsController')
 const serverUrl = "https://hzgmh0bhktiz.usemoralis.com:2053/server";
@@ -23,6 +23,7 @@ router.get('/nftonecolleccion', getOneCollection);
 router.get('/tests/price', getNFTPrice)
 router.get('/nftcollection', getNFTCollection )
 router.post("/nft", createNft);
+router.get('/nftid', getIdNft );
 
 
 
