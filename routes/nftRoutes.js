@@ -2,9 +2,6 @@ const { default: axios } = require("axios");
 const express = require("express");
 
 const router = express.Router();
-router.use(session({secret: 'cats'}));
-router.use(passport.initialize());
-router.use(passport.session());
 
 const Moralis = require("moralis/node");
 const { getAllNft, getNameNft, getPayment } = require("../controllers/nftGetController");
