@@ -6,8 +6,8 @@ const nftRoutes = require('./routes/nftRoutes')
 const user = require('./controllers/usuarioController')
 const Usuario = require('./models/user')
 const authUser = require('./controllers/authController')
-
-
+const {getProfile} = require('./controllers/user/user')
+const {updatedProfileById} =require('./controllers/user/user')
 const pruebaRoles = require('./controllers/InitialSetup')
 
 const {verifyAdmin}  = require('./middleweare/VerifyAdmin')
@@ -71,7 +71,9 @@ app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
 
 //endpoint donde veremos mediante un json los usuarios
 
-
+//user
+router.get("/profile/:token", getProfile);
+router.put("/profile/:token", updatedProfileById)
 
 //conext to db
 const PORT = process.env.PORT || 4000
@@ -82,4 +84,4 @@ const PORT = process.env.PORT || 4000
 
 
 
-        
+//prueba tail
