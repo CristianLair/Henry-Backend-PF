@@ -4,8 +4,8 @@ const User = require("../../models/user");
 async function updatedProfileById(req, res, next) {
   try {
     const {  description, profilePic, email} = req.body;
-    const { id } = req.params;
-    let profileUser = await User.find({id})
+    const { token } = req.params;
+    let profileUser = await User.find({token})
     profileUser.description = description;
     profileUser.profilePic = profilePic;
     profileUser.email= email;
@@ -13,8 +13,8 @@ async function updatedProfileById(req, res, next) {
     res.json(profileUser);
     
   } catch (error) {
-    next("error");
-    res.json("fail edit profile");
+    
+   return res.status(404).json(error);
   }
 }
 
