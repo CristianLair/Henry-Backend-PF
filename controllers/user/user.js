@@ -4,8 +4,8 @@ const User = require("../../models/user");
 async function updatedProfileById(req, res, next) {
   try {
     const {  description, profilePic, email} = req.body;
-    const { token } = req.params;
-    let profileUser = await User.findOne({token})
+    const { id } = req.params;
+    let profileUser = await User.findOne({id})
     profileUser.description = description;
     profileUser.profilePic = profilePic;
     profileUser.email= email;
@@ -20,9 +20,9 @@ async function updatedProfileById(req, res, next) {
 
 
 async function getProfile(req, res) {
-    const { token } = req.params;
+    const { id } = req.params;
     try {
-        const profile = await User.findOne({token})
+        const profile = await User.findOne({id})
 
         return res.json(profile)
 
