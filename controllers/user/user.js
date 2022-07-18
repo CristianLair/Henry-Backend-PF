@@ -5,7 +5,7 @@ async function updatedProfileById(req, res, next) {
   try {
     const {  description, profilePic, email} = req.body;
     const { id } = req.params;
-    let profileUser = await User.findOne({id})
+    let profileUser = await User.find({id})
     profileUser.description = description;
     profileUser.profilePic = profilePic;
     profileUser.email= email;
@@ -20,9 +20,9 @@ async function updatedProfileById(req, res, next) {
 
 
 async function getProfile(req, res) {
-    const { id } = req.params;
-    try {
-        const profile = await User.findOne({id})
+  try {
+      const { email } = req.params;
+        const profile = await User.findOne({email})
 
         return res.json(profile)
 
