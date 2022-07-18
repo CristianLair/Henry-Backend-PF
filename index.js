@@ -72,7 +72,7 @@ app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
 //endpoint donde veremos mediante un json los usuarios
 
 //user
-app.get("/profile/:token", getProfile);
+app.get("/profile/:email", getProfile);
 app.put("/profile/:token", updatedProfileById)
 
 //conext to db

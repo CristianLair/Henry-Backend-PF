@@ -5,7 +5,7 @@ async function updatedProfileById(req, res, next) {
   try {
     const {  description, profilePic, email} = req.body;
     const { token } = req.params;
-    let profileUser = await User.findOne({token})
+    let profileUser = await User.find({token})
     profileUser.description = description;
     profileUser.profilePic = profilePic;
     profileUser.email= email;
@@ -13,16 +13,16 @@ async function updatedProfileById(req, res, next) {
     res.json(profileUser);
     
   } catch (error) {
-    next("error");
-    res.json("fail edit profile");
+    
+   return res.status(404).json(error);
   }
 }
 
 
 async function getProfile(req, res) {
-    const { token } = req.params;
-    try {
-        const profile = await User.findOne({token})
+  try {
+      const { email } = req.params;
+        const profile = await User.findOne({email})
 
         return res.json(profile)
 
