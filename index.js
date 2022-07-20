@@ -9,8 +9,9 @@ const authUser = require('./controllers/authController')
 const {getProfile} = require('./controllers/user/user')
 const {updatedProfileById} =require('./controllers/user/user')
 const pruebaRoles = require('./controllers/InitialSetup')
-
+const {transporter} = require('./configs/mailer')
 const {verifyAdmin}  = require('./middleweare/VerifyAdmin')
+const templatePassword = require('./routes/emails/emailPassword')
 const conectarDB = require('./db')
 const {deleteUser} = require('./controllers/Admin/admin')
 const {getUserById}  = require('./controllers/Admin/admin')
@@ -20,6 +21,7 @@ const changePassword = require('./controllers/authController')
 const { checkRolesExisted} = require('./middleweare/VerifyToken')
 const {isAdmin} = require('./middleweare/VerifyToken')
 const cors = require('cors')
+const bcrypt = require('bcrypt')
 conectarDB()
 pruebaRoles()
 // express app
@@ -60,7 +62,30 @@ app.use((req, res, next) => {
 app.use('/api', nftRoutes)
 app.use('/api/registro',user,checkRolesExisted)
 app.use('/api/login',authUser)
-app.get('/api/:id/changePassword',changePassword)
+app.put('/:id/updatePassword', (req, res, next) => {
+  const { id } = req.params;
+  let { password } = req.body;
+  bcrypt.hash(password, 10, (err, hash) => {
+    password = hash;
+    if (err) {
+      next(err);
+    }
+    req.body.password = password;
+    Usuario.findById(id)
+      .then((response) => {
+        response.updateOne({ password }, { where: { id } })
+          .then(async () => {
+            await transporter.sendMail({
+              from: '"wallaby 🎲" <wallaby@gmail.com>', // sender address
+              to: response.email, // list of receivers
+              subject: 'Recover your password', // Subject line
+              html: templatePassword(response.email,"Que bueno verte"), // html body
+            });
+            res.send('Password Update');
+          });
+      }).catch((e) => next(e));
+  });
+});
 app.use("/auth", authRouter);
 // Rutas para el admin
 app.get('/admin/verify', verifyAdmin,isAdmin)
@@ -79,7 +104,7 @@ app.put("/profile/:token", updatedProfileById)
 const PORT = process.env.PORT || 4000
         app.listen(PORT, () => {
             console.log('listening for request on port',PORT)
-        })
+          })
 
 
 
