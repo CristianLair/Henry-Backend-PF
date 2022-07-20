@@ -131,7 +131,7 @@ function template(first, last) {
                     </tr>
                     <tr>
                         <td bgcolor="#000000" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #CCCCCC; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">Cheers,<br>DiceStarter!</p>
+                            <p style="margin: 0;">Cheers,<br>Wallaby!</p>
                         </td>
                     </tr>
                 </table>
@@ -165,4 +165,4 @@ function template(first, last) {
         </html>
         `;
   }
-  module.exports = {template};
+  module.exports = template;

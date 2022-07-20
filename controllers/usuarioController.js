@@ -4,6 +4,9 @@ const {validationResult} = require('express-validator');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const Role = require('../models/Role')
+const {transporter} = require('../configs/mailer')
+const emailRegister = require('../routes/emails/emailRegister')
+
 const createUsuario = async(req,res) => {
 
 const errores = validationResult(req)
@@ -30,14 +33,13 @@ usuario = new User(req.body)
 const salt = await bcryptjs.genSalt(10)
 usuario.password = await bcryptjs.hash(password,salt) // asignacion del hash a la password para evitar manipulacion de datos en el login del usuario
 console.log(usuario.password)
-if(roles){
-    const foundRoles = await Role.find({name:{$in:roles}})
-    usuario.roles = foundRoles.map(role=> role._id)
-}else{
-    const role = await Role.findOne({name:"user"})
-    usuario.roles = [role._id]
-}   
 
+await transporter.sendMail({
+    from: '"Wallaby 👻" <wallaby@gmail.com>', // sender address
+    to: usuario.email, // list of receivers
+    subject: 'SignUp Success ✔', // Subject line
+    html: emailRegister(usuario.nombre, usuario.email), // html body
+  });
 await usuario.save()
 
 //Creamos y firmamos con JWT 
