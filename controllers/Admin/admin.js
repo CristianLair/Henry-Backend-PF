@@ -1,9 +1,23 @@
 const Users = require('../../models/user')
 
 
+
+
+
+async function getAdminsDb(_req, res, next) {
+  try {
+    const users = await Users.find({ roles: ""});   
+    return res.send(users);
+  } catch (err) {
+    console.log(err,'no sos usuario admin');
+  }
+}
+
+
 async function getUsersDb(_req, res, next) {
     try {
-      const users = await Users.find({ roles: "62ce61008a8cf0b94f5c327d" });   
+      //  roles: "62ce61008a8cf0b94f5c327d" 
+      const users = await Users.find({});   
       return res.send(users);
     } catch (err) {
       console.log(err,'no sos usuario admin');
@@ -22,8 +36,8 @@ async function getUsersDb(_req, res, next) {
 
   async function updateAdminById(req, res, next) {
     try {
-      const {id} = req.params;
-      const update = await Users.findOneAndUpdate({ _id: id }, {'roles':""},{new:true});
+      const {email} = req.params;
+      const update = await Users.findOneAndUpdate({ email: email }, {roles:"62ce61008a8cf0b94f5c327e"},{new:true});
       return res.send(update);
     } catch (error) {
       next("error");
@@ -48,4 +62,4 @@ async function getUsersDb(_req, res, next) {
 
 
 
-  module.exports = {getUsersDb,deleteUser,getUserById,updateAdminById}
+  module.exports = {getUsersDb,deleteUser,getUserById,updateAdminById, getAdminsDb}
