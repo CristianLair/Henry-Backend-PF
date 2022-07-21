@@ -170,4 +170,4 @@ const {
             </html>
             `;
   }
-  module.exports = {template};
+  module.exports = template;

@@ -19,7 +19,13 @@ const {getUsersDb} = require('./controllers/Admin/admin')
 const {updateAdminById} = require('./controllers/Admin/admin')
 const changePassword = require('./controllers/authController')
 const { checkRolesExisted} = require('./middleweare/VerifyToken')
+
+const {isAdmin} = require('./middleweare/VerifyToken')
+const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
+const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
+
 // const {isAdmin} = require('./middleweare/VerifyToken')
+
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 conectarDB()
@@ -85,6 +91,54 @@ app.put('/:id/updatePassword', (req, res, next) => {
           });
       }).catch((e) => next(e));
   });
+});
+app.put('/:email/recoverpassword', (req, res, next) => {
+  const { email } = req.params;
+  let { password } = req.body;
+  const { confirmPassword } = req.body;
+  if (password === confirmPassword) {
+    bcrypt.hash(password, 10, (err, hash) => {
+      password = hash;
+      if (err) {
+        return next(err);
+      }
+      req.body.password = password;
+      Usuario.findOne({ where: { email } })
+        .then((response) => {
+          response.updateOne({ password }, { where: { email } })
+            .then(async () => {
+              await transporter.sendMail({
+                from: '"DiceStarter 🎲" <dicestarter@gmail.com>', // sender address
+                to: response.email, // list of receivers
+                subject: 'Recover your password', // Subject line
+                html: emailRecoverPassword(response.firstName, "Saludos cordiales !"), // html body
+              });
+              return res.send('Password Update');
+            });
+        }).catch((e) => next(e));
+    });
+  } else {
+    return res.status(400).send('The two passwords must match');
+  }
+  return null;
+});
+app.get('/:email/recoverpassword', (req, res, next) => {
+  const { email } = req.params;
+  Usuario.findOne({ where: { email } })
+    .then(async (response) => {
+      if (response) {
+        await transporter.sendMail({
+          from: '"Wallaby 🎲" <wallaby@gmail.com>', // sender address
+          to: response.email, // list of receivers
+          subject: 'Recover your password', // Subject line
+          html: templateForgottenPassword(response.email,
+            "Un gusto verte nuevamente !",
+            email), // html body
+        });
+        return res.send('E-mail sent');
+      }
+      return res.status(404).send('Account no exist');
+    }).catch((e) => next(e));
 });
 app.use("/auth", authRouter);
 // Rutas para el admin
