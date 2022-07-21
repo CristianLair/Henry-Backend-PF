@@ -63,8 +63,8 @@ app.use((req, res, next) => {
 app.use('/api', nftRoutes)
 app.use('/api/registro',user,checkRolesExisted)
 app.use('/api/login',authUser)
-app.put('/:id/updatePassword', (req, res, next) => {
-  const { id } = req.params;
+app.put('/:email/updatePassword', (req, res, next) => {
+  const { email } = req.params;
   let { password } = req.body;
   bcrypt.hash(password, 10, (err, hash) => {
     password = hash;
@@ -72,9 +72,9 @@ app.put('/:id/updatePassword', (req, res, next) => {
       next(err);
     }
     req.body.password = password;
-    Usuario.findById(id)
+    Usuario.findOne(email)
       .then((response) => {
-        response.updateOne({ password }, { where: { id } })
+        response.updateOne({ password }, { where: { email } })
           .then(async () => {
             await transporter.sendMail({
               from: '"wallaby 🎲" <wallaby@gmail.com>', // sender address
@@ -104,7 +104,7 @@ app.put('/:email/recoverpassword', (req, res, next) => {
           response.updateOne({ password }, { where: { email } })
             .then(async () => {
               await transporter.sendMail({
-                from: '"DiceStarter 🎲" <dicestarter@gmail.com>', // sender address
+                from: '"Wallabi 🎲" <wallaby@gmail.com>', // sender address
                 to: response.email, // list of receivers
                 subject: 'Recover your password', // Subject line
                 html: emailRecoverPassword(response.firstName, "Saludos cordiales !"), // html body
