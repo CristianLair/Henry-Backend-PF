@@ -19,9 +19,7 @@ const {getUsersDb} = require('./controllers/Admin/admin')
 const {updateAdminById} = require('./controllers/Admin/admin')
 const changePassword = require('./controllers/authController')
 const { checkRolesExisted} = require('./middleweare/VerifyToken')
-const {isAdmin} = require('./middleweare/VerifyToken')
-const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
-const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
+
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 conectarDB()
@@ -138,7 +136,7 @@ app.get('/:email/recoverpassword', (req, res, next) => {
 });
 app.use("/auth", authRouter);
 // Rutas para el admin
-app.get('/admin/verify', verifyAdmin,isAdmin)
+app.get('/admin/verify', verifyAdmin)
 app.get('/admin/users', verifyAdmin,getUsersDb)
 app.delete('/admin/delete',verifyAdmin,deleteUser)
 app.get('/admin/:id',verifyAdmin,getUserById)
