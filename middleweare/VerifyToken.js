@@ -21,24 +21,26 @@ async function verifyToken(req, res, next) {
   }
 }
 
-async function isAdmin (req, res, next)  {
-    try {
-      const user = await User.findById(req.email);
-      const roles = await Role.find({ email: { $in: user.roles } });
+// async function isAdmin (req, res, next)  {
+//     try {
+//       const user = await User.findOne({email:req.body.email});
+//       // console.log(user)
+//       // const roles = await Role.find({ _id: { $in: user.roles } });
+//       // console.log(roles)
+//       // for (let i = 0; i < roles.length; i++) {
+//         console.log(user.roles)
+//         if (user.roles[0] === "62ce61008a8cf0b94f5c327e") {
+//           next();
+//           return;
+//         }
+    
   
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "admin") {
-          next();
-          return;
-        }
-      }
-  
-      return res.status(403).json({ message: "Require Admin Role!" });
-    } catch (error) {
-      console.log(error)
-      return res.status(500).send({ message: error });
-    }
-  }
+//       return res.status(403).json({ message: "Require Admin Role!" });
+//     } catch (error) {
+//       console.log(error)
+//       return res.status(500).send({ message: error });
+//     }
+//   }
   async function checkRolesExisted  (req, res, next) {
     if (req.body.roles) {
       for (let i = 0; i < req.body.roles.length; i++) {
@@ -53,6 +55,4 @@ async function isAdmin (req, res, next)  {
   }
 
 
-module.exports = {verifyToken,isAdmin,checkRolesExisted}
-
-
+module.exports = {verifyToken,checkRolesExisted}
