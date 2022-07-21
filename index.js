@@ -138,7 +138,7 @@ app.get('/:email/recoverpassword', (req, res, next) => {
 });
 app.use("/auth", authRouter);
 // Rutas para el admin
-app.get('/admin/verify', verifyAdmin,isAdmin)
+app.get('/admin/verify', verifyAdmin)
 app.get('/admin/users', verifyAdmin,getUsersDb)
 app.delete('/admin/delete',verifyAdmin,deleteUser)
 app.get('/admin/:id',verifyAdmin,getUserById)
