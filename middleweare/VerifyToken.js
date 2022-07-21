@@ -23,8 +23,8 @@ async function verifyToken(req, res, next) {
 
 async function isAdmin (req, res, next)  {
     try {
-      const user = await User.findById(req.userId);
-      const roles = await Role.find({ _id: { $in: user.roles } });
+      const user = await User.findById(req.email);
+      const roles = await Role.find({ email: { $in: user.roles } });
   
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "admin") {
