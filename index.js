@@ -72,7 +72,7 @@ app.put('/:email/updatePassword', (req, res, next) => {
       next(err);
     }
     req.body.password = password;
-    Usuario.findOne(email)
+    Usuario.findOne({email: email})
       .then((response) => {
         response.updateOne({ password }, { where: { email } })
           .then(async () => {
@@ -99,7 +99,7 @@ app.put('/:email/recoverpassword', (req, res, next) => {
         return next(err);
       }
       req.body.password = password;
-      Usuario.findOne({ where: { email } })
+      Usuario.findOne({email: email})
         .then((response) => {
           response.updateOne({ password }, { where: { email } })
             .then(async () => {
@@ -120,7 +120,7 @@ app.put('/:email/recoverpassword', (req, res, next) => {
 });
 app.get('/:email/recoverpassword', (req, res, next) => {
   const { email } = req.params;
-  Usuario.findOne({ where: { email } })
+  Usuario.findOne({email:email})
     .then(async (response) => {
       if (response) {
         await transporter.sendMail({
