@@ -88,7 +88,7 @@ app.put('/:email/updatePassword', (req, res, next) => {
   });
 });
 
-app.put('/:email/recoverpassword', (req, res, next) => {
+app.put('/:email/newpassword', (req, res, next) => {
   const { email } = req.params;
   let { password } = req.body;
   const { confirmPassword } = req.body;
