@@ -43,9 +43,15 @@ const userSchema =  mongoose.Schema({
     nftLikes:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: "NftCreated",
-      }]
-
+      }],
+      ranking: {
+        type: Number,
+        trim: true,
+        default: 0
+      },
+      
 },
+
     {
         timestamps:true
     })
