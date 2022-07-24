@@ -44,6 +44,16 @@ async function getUsersDb(_req, res, next) {
       res.send("Error al editar el usuario");
     }
   }
+  async function updateAdminToUser(req, res, next) {
+    try {
+      const {email} = req.params;
+      const update = await Users.findOneAndUpdate({ email: email }, {roles:""},{new:true});
+      return res.send(update);
+    } catch (error) {
+      next("error");
+      res.send("Error al editar el usuario");
+    }
+  }
 
 
   const deleteUser = async (req, res) => {
