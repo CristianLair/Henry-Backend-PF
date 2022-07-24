@@ -21,6 +21,8 @@ const changePassword = require('./controllers/authController')
 const { checkRolesExisted} = require('./middleweare/VerifyToken')
 const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
 const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
+const {likeNft} = require('./controllers/likesCollection')
+const {checkOut} = require('./controllers/likesCollection')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 conectarDB()
@@ -145,7 +147,7 @@ app.get('/admin/:id',verifyAdmin,getUserById)
 app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
 
 //endpoint donde veremos mediante un json los usuarios
-
+app.route("/like/:id").put(checkOut, likeNft)
 //user
 app.get("/profile/:email", getProfile);
 app.put("/profile/:token", updatedProfileById)
