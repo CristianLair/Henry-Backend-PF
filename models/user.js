@@ -39,8 +39,11 @@ const userSchema =  mongoose.Schema({
     registro:{
         type: Date,
         default: Date.now()
-    }
-    
+    },
+    nftLikes:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "NftCreated",
+      }]
 
 },
     {

@@ -19,7 +19,15 @@ const nftSchema = new Schema({
     token_address : {
         type : String,
         default : '1'
-    }
+    },
+    userLikes: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Usuario"
+        }
+      ],
+     
+
 }, {timestamps: true})
 
 module.exports = mongoose.model('Nft', nftSchema)
