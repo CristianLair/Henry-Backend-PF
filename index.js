@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const nftRoutes = require('./routes/nftRoutes')
 const user = require('./controllers/usuarioController')
 const Usuario = require('./models/user')
+const Review = require('./models/review')
 const authUser = require('./controllers/authController')
 const {getProfile} = require('./controllers/user/user')
 const {updatedProfileById} =require('./controllers/user/user')
@@ -21,8 +22,7 @@ const changePassword = require('./controllers/authController')
 const { checkRolesExisted} = require('./middleweare/VerifyToken')
 const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
 const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
-const {likeNft} = require('./controllers/likesCollection')
-const {checkOut} = require('./controllers/likesCollection')
+
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 conectarDB()
@@ -120,6 +120,30 @@ app.put('/:email/newpassword', (req, res, next) => {
   }
   return null;
 });
+app.post('/:email/reviews',(req,res,next)=>{
+  
+  const review = new Review();
+    review.email = req.body.email;
+    review.rating = req.body.rating;
+    
+    review.save()
+    .then((result) => {
+      Usuario.findOne({ email: review.email }, (err, user) => {
+          if (user) {
+              // The below two lines will add the newly saved review's 
+              // ObjectID to the the User's reviews array field
+              user.reviews.push(review);
+              user.save();
+              res.json({ message: 'Review created!' });
+          }
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+      next()
+    });
+    
+})
 app.get('/:email/recoverpassword', (req, res, next) => {
   const { email } = req.params;
   Usuario.findOne({email:email})
@@ -147,7 +171,7 @@ app.get('/admin/:id',verifyAdmin,getUserById)
 app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
 
 //endpoint donde veremos mediante un json los usuarios
-app.route("/like/:id").put(checkOut, likeNft)
+
 //user
 app.get("/profile/:email", getProfile);
 app.put("/profile/:token", updatedProfileById)
