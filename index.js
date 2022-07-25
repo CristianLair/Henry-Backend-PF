@@ -1,35 +1,34 @@
-require('dotenv').config()
+require("dotenv").config();
 const authRouter = require("./routes/googleRoutes");
-const express = require('express')
-const mongoose = require('mongoose')
-const nftRoutes = require('./routes/nftRoutes')
-const user = require('./controllers/usuarioController')
-const Usuario = require('./models/user')
-const authUser = require('./controllers/authController')
-const {getProfile} = require('./controllers/user/user')
-const {updatedProfileById} =require('./controllers/user/user')
-const pruebaRoles = require('./controllers/InitialSetup')
-const {transporter} = require('./configs/mailer')
-const {verifyAdmin}  = require('./middleweare/VerifyAdmin')
-const templatePassword = require('./routes/emails/emailPassword')
-const conectarDB = require('./db')
-const {deleteUser} = require('./controllers/Admin/admin')
-const {getUserById}  = require('./controllers/Admin/admin')
-const {getUsersDb} = require('./controllers/Admin/admin')
-const {updateAdminById} = require('./controllers/Admin/admin')
-const changePassword = require('./controllers/authController')
-const { checkRolesExisted} = require('./middleweare/VerifyToken')
-const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
-const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
-const cors = require('cors')
-const bcrypt = require('bcrypt')
-conectarDB()
-pruebaRoles()
+const express = require("express");
+const mongoose = require("mongoose");
+const nftRoutes = require("./routes/nftRoutes");
+const user = require("./controllers/usuarioController");
+const Usuario = require("./models/user");
+const authUser = require("./controllers/authController");
+const { getProfile } = require("./controllers/user/user");
+const { updatedProfileById } = require("./controllers/user/user");
+const pruebaRoles = require("./controllers/InitialSetup");
+const { transporter } = require("./configs/mailer");
+const { verifyAdmin } = require("./middleweare/VerifyAdmin");
+const templatePassword = require("./routes/emails/emailPassword");
+const conectarDB = require("./db");
+const { deleteUser, updateAdminToUser } = require("./controllers/Admin/admin");
+const { getUserById } = require("./controllers/Admin/admin");
+const { getUsersDb } = require("./controllers/Admin/admin");
+const { updateAdminById } = require("./controllers/Admin/admin");
+const changePassword = require("./controllers/authController");
+const { checkRolesExisted } = require("./middleweare/VerifyToken");
+const emailRecoverPassword = require("./routes/emails/emailRecoverPassword");
+const templateForgottenPassword = require("./routes/emails/emailForgottenPassword");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
+conectarDB();
+pruebaRoles();
 // express app
-const app = express()
+const app = express();
 
-
-app.name = 'API'
+app.name = "API";
 
 app.use(cors());
 app.use((req, res, next) => {
@@ -45,25 +44,18 @@ app.use((req, res, next) => {
 // app.use('/')
 
 // middleware
-app.use(express.json())
-
-
-
-
+app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
-})
-
-
-
+  console.log(req.path, req.method);
+  next();
+});
 
 // routes
-app.use('/api', nftRoutes)
-app.use('/api/registro',user,checkRolesExisted)
-app.use('/api/login',authUser)
-app.put('/:email/updatePassword', (req, res, next) => {
+app.use("/api", nftRoutes);
+app.use("/api/registro", user, checkRolesExisted);
+app.use("/api/login", authUser);
+app.put("/:email/updatePassword", (req, res, next) => {
   const { email } = req.params;
   let { password } = req.body;
   bcrypt.hash(password, 10, (err, hash) => {
@@ -72,23 +64,25 @@ app.put('/:email/updatePassword', (req, res, next) => {
       next(err);
     }
     req.body.password = password;
-    Usuario.findOne({email: email})
+    Usuario.findOne({ email: email })
       .then((response) => {
-        response.updateOne({ password }, { where: { email } })
+        response
+          .updateOne({ password }, { where: { email } })
           .then(async () => {
             await transporter.sendMail({
               from: '"wallaby 🎲" <wallaby@gmail.com>', // sender address
               to: response.email, // list of receivers
-              subject: 'Recover your password', // Subject line
-              html: templatePassword(response.email,"Que bueno verte"), // html body
+              subject: "Recover your password", // Subject line
+              html: templatePassword(response.email, "Que bueno verte"), // html body
             });
-            res.send('Password Update');
+            res.send("Password Update");
           });
-      }).catch((e) => next(e));
+      })
+      .catch((e) => next(e));
   });
 });
 
-app.put('/:email/recoverpassword', (req, res, next) => {
+app.put("/:email/recoverpassword", (req, res, next) => {
   const { email } = req.params;
   let { password } = req.body;
   const { confirmPassword } = req.body;
@@ -99,64 +93,69 @@ app.put('/:email/recoverpassword', (req, res, next) => {
         return next(err);
       }
       req.body.password = password;
-      Usuario.findOne({email: email})
+      Usuario.findOne({ email: email })
         .then((response) => {
-          response.updateOne({ password }, { where: { email } })
+          response
+            .updateOne({ password }, { where: { email } })
             .then(async () => {
               await transporter.sendMail({
                 from: '"Wallabi 🎲" <wallaby@gmail.com>', // sender address
                 to: response.email, // list of receivers
-                subject: 'Recover your password', // Subject line
-                html: emailRecoverPassword(response.firstName, "Saludos cordiales !"), // html body
+                subject: "Recover your password", // Subject line
+                html: emailRecoverPassword(
+                  response.firstName,
+                  "Saludos cordiales !"
+                ), // html body
               });
-              return res.send('Password Update');
+              return res.send("Password Update");
             });
-        }).catch((e) => next(e));
+        })
+        .catch((e) => next(e));
     });
   } else {
-    return res.status(400).send('The two passwords must match');
+    return res.status(400).send("The two passwords must match");
   }
   return null;
 });
-app.get('/:email/recoverpassword', (req, res, next) => {
+app.get("/:email/recoverpassword", (req, res, next) => {
   const { email } = req.params;
-  Usuario.findOne({email:email})
+  Usuario.findOne({ email: email })
     .then(async (response) => {
       if (response) {
         await transporter.sendMail({
           from: '"Wallaby 🎲" <wallaby@gmail.com>', // sender address
           to: response.email, // list of receivers
-          subject: 'Recover your password', // Subject line
-          html: templateForgottenPassword(response.email,
+          subject: "Recover your password", // Subject line
+          html: templateForgottenPassword(
+            response.email,
             "Un gusto verte nuevamente !",
-            email), // html body
+            email
+          ), // html body
         });
-        return res.send('E-mail sent');
+        return res.send("E-mail sent");
       }
-      return res.status(404).send('Account no exist');
-    }).catch((e) => next(e));
+      return res.status(404).send("Account no exist");
+    })
+    .catch((e) => next(e));
 });
 app.use("/auth", authRouter);
 // Rutas para el admin
-app.get('/admin/verify', verifyAdmin)
-app.post('/admin/users',verifyAdmin, getUsersDb)
-app.delete('/admin/delete',verifyAdmin,deleteUser)
-app.get('/admin/:id',verifyAdmin,getUserById)
-app.put('/admin/edit/:email',verifyAdmin, updateAdminById)
-
+app.get("/admin/verify", verifyAdmin);
+app.post("/admin/users", verifyAdmin, getUsersDb);
+app.delete("/admin/delete", verifyAdmin, deleteUser);
+app.get("/admin/:id", verifyAdmin, getUserById);
+app.put("/admin/edit/:email", verifyAdmin, updateAdminById);
+app.put("/admin/edituser/:email", verifyAdmin, updateAdminToUser);
 //endpoint donde veremos mediante un json los usuarios
 
 //user
 app.get("/profile/:email", getProfile);
-app.put("/profile/:token", updatedProfileById)
+app.put("/profile/:token", updatedProfileById);
 
 //conext to db
-const PORT = process.env.PORT || 4000
-        app.listen(PORT, () => {
-            console.log('listening for request on port',PORT)
-          })
-
-
-
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log("listening for request on port", PORT);
+});
 
 //prueba tail
