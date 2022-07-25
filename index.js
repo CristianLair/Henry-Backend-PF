@@ -148,7 +148,7 @@ app.post('/:email/reviews',(req,res,next)=>{
     });
     
 })
-app.get('/:email/recoverpassword', (req, res, next) => {
+
 
 app.get("/:email/recoverpassword", (req, res, next) => {
 
@@ -192,4 +192,4 @@ app.listen(PORT, () => {
   console.log("listening for request on port", PORT);
 });
 
-//prueba tail
+////prueba tail
