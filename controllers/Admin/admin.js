@@ -1,5 +1,5 @@
 const Users = require('../../models/user')
-
+const nftSchema = require("../../models/Nft.js")
 
 
 
@@ -71,5 +71,28 @@ async function getUsersDb(_req, res, next) {
   };
 
 
+  const getDBNfts = async (req, res) => {
+    try{
+      const allnfts = await nftSchema.find({});
+      res.send(allnfts);
 
-  module.exports = {getUsersDb,deleteUser,getUserById,updateAdminById, getAdminsDb, updateAdminToUser}
+    }catch(err){
+      res.send(err)
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  module.exports = {getUsersDb,deleteUser,getUserById,updateAdminById, getAdminsDb, updateAdminToUser, getDBNfts}

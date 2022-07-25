@@ -1,33 +1,33 @@
 require("dotenv").config();
 const authRouter = require("./routes/googleRoutes");
 
-const express = require('express')
-const mongoose = require('mongoose')
-const nftRoutes = require('./routes/nftRoutes')
-const user = require('./controllers/usuarioController')
-const Usuario = require('./models/user')
-const authUser = require('./controllers/authController')
-const {getProfile} = require('./controllers/user/user')
-const {updatedProfileById} =require('./controllers/user/user')
-const pruebaRoles = require('./controllers/InitialSetup')
-const {transporter} = require('./configs/mailer')
-const {verifyAdmin}  = require('./middleweare/VerifyAdmin')
-const templatePassword = require('./routes/emails/emailPassword')
-const conectarDB = require('./db')
-const {deleteUser} = require('./controllers/Admin/admin')
-const {getUserById, updateAdminToUser}  = require('./controllers/Admin/admin')
-const {getUsersDb} = require('./controllers/Admin/admin')
-const {updateAdminById} = require('./controllers/Admin/admin')
-const changePassword = require('./controllers/authController')
-const { checkRolesExisted} = require('./middleweare/VerifyToken')
-const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
-const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
-const {likeNft} = require('./controllers/likesCollection')
-const {checkOut} = require('./controllers/likesCollection')
-const cors = require('cors')
-const bcrypt = require('bcrypt')
-conectarDB()
-pruebaRoles()
+const express = require("express");
+const mongoose = require("mongoose");
+const nftRoutes = require("./routes/nftRoutes");
+const user = require("./controllers/usuarioController");
+const Usuario = require("./models/user");
+const authUser = require("./controllers/authController");
+const { getProfile } = require("./controllers/user/user");
+const { updatedProfileById } = require("./controllers/user/user");
+const pruebaRoles = require("./controllers/InitialSetup");
+const { transporter } = require("./configs/mailer");
+const { verifyAdmin } = require("./middleweare/VerifyAdmin");
+const templatePassword = require("./routes/emails/emailPassword");
+const conectarDB = require("./db");
+const { deleteUser, getDBNfts } = require("./controllers/Admin/admin");
+const { getUserById, updateAdminToUser } = require("./controllers/Admin/admin");
+const { getUsersDb } = require("./controllers/Admin/admin");
+const { updateAdminById } = require("./controllers/Admin/admin");
+const changePassword = require("./controllers/authController");
+const { checkRolesExisted } = require("./middleweare/VerifyToken");
+const emailRecoverPassword = require("./routes/emails/emailRecoverPassword");
+const templateForgottenPassword = require("./routes/emails/emailForgottenPassword");
+const { likeNft } = require("./controllers/likesCollection");
+const { checkOut } = require("./controllers/likesCollection");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
+conectarDB();
+pruebaRoles();
 
 // express app
 const app = express();
@@ -86,9 +86,7 @@ app.put("/:email/updatePassword", (req, res, next) => {
   });
 });
 
-
-app.put('/:email/newpassword', (req, res, next) => {
-
+app.put("/:email/newpassword", (req, res, next) => {
   const { email } = req.params;
   let { password } = req.body;
   const { confirmPassword } = req.body;
@@ -152,8 +150,9 @@ app.delete("/admin/delete", verifyAdmin, deleteUser);
 app.get("/admin/:id", verifyAdmin, getUserById);
 app.put("/admin/edit/:email", verifyAdmin, updateAdminById);
 app.put("/admin/edituser/:email", verifyAdmin, updateAdminToUser);
+app.post("/admin/nftcreated", verifyAdmin, getDBNfts);
 //endpoint donde veremos mediante un json los usuarios
-app.route("/like/:id").put(checkOut, likeNft)
+app.route("/like/:id").put(checkOut, likeNft);
 //user
 app.get("/profile/:email", getProfile);
 app.put("/profile/:token", updatedProfileById);
