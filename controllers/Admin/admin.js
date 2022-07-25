@@ -47,7 +47,7 @@ async function getUsersDb(_req, res, next) {
   async function updateAdminToUser(req, res, next) {
     try {
       const {email} = req.params;
-      const update = await Users.findOneAndUpdate({ email: email }, {roles:""},{new:true});
+      const update = await Users.findOneAndUpdate({ email: email }, {roles:[]},{new:true});
       return res.send(update);
     } catch (error) {
       next("error");
@@ -72,4 +72,4 @@ async function getUsersDb(_req, res, next) {
 
 
 
-  module.exports = {getUsersDb,deleteUser,getUserById,updateAdminById, getAdminsDb}
+  module.exports = {getUsersDb,deleteUser,getUserById,updateAdminById, getAdminsDb, updateAdminToUser}
