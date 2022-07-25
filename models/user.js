@@ -49,6 +49,11 @@ const userSchema =  mongoose.Schema({
         trim: true,
         default: 0
       },
+      reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+}, {
+  toJSON: {
+    virtuals: true,
+  },
       
 },
 
