@@ -23,40 +23,12 @@ const changePassword = require("./controllers/authController");
 const { checkRolesExisted } = require("./middleweare/VerifyToken");
 const emailRecoverPassword = require("./routes/emails/emailRecoverPassword");
 const templateForgottenPassword = require("./routes/emails/emailForgottenPassword");
-const { likeNft } = require("./controllers/likesCollection");
-const { checkOut } = require("./controllers/likesCollection");
+
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 conectarDB();
 pruebaRoles();
 
-const express = require('express')
-const mongoose = require('mongoose')
-const nftRoutes = require('./routes/nftRoutes')
-const user = require('./controllers/usuarioController')
-const Usuario = require('./models/user')
-const Review = require('./models/review')
-const authUser = require('./controllers/authController')
-const {getProfile} = require('./controllers/user/user')
-const {updatedProfileById} =require('./controllers/user/user')
-const pruebaRoles = require('./controllers/InitialSetup')
-const {transporter} = require('./configs/mailer')
-const {verifyAdmin}  = require('./middleweare/VerifyAdmin')
-const templatePassword = require('./routes/emails/emailPassword')
-const conectarDB = require('./db')
-const {deleteUser} = require('./controllers/Admin/admin')
-const {getUserById, updateAdminToUser}  = require('./controllers/Admin/admin')
-const {getUsersDb} = require('./controllers/Admin/admin')
-const {updateAdminById} = require('./controllers/Admin/admin')
-const changePassword = require('./controllers/authController')
-const { checkRolesExisted} = require('./middleweare/VerifyToken')
-const emailRecoverPassword = require('./routes/emails/emailRecoverPassword')
-const templateForgottenPassword = require('./routes/emails/emailForgottenPassword')
-
-const cors = require('cors')
-const bcrypt = require('bcrypt')
-conectarDB()
-pruebaRoles()
 
 
 // express app
@@ -176,7 +148,7 @@ app.post('/:email/reviews',(req,res,next)=>{
     });
     
 })
-app.get('/:email/recoverpassword', (req, res, next) => {
+
 
 app.get("/:email/recoverpassword", (req, res, next) => {
 
@@ -211,7 +183,7 @@ app.put("/admin/edituser/:email", verifyAdmin, updateAdminToUser);
 app.post("/admin/nftcreated", verifyAdmin, getDBNfts);
 //endpoint donde veremos mediante un json los usuarios
 
-app.route("/like/:id").put(checkOut, likeNft);
+
 
 
 
@@ -225,4 +197,4 @@ app.listen(PORT, () => {
   console.log("listening for request on port", PORT);
 });
 
-//prueba tail
+////prueba tail
