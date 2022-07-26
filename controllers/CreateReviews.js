@@ -3,7 +3,7 @@
 const review = require('../models/review');
 
  const createReview = (req, res) => {
-    const review = new Review();
+    const review = new Review;
     review.username = req.body.username;
     review.rating = req.body.rating;
     review.body = req.body.body;
