@@ -123,13 +123,13 @@ app.put("/:email/newpassword", (req, res, next) => {
   }
   return null;
 });
-app.get('/reviews',(req,res,next)=>{
+app.get('/reviews',async(req,res,next)=>{
 
 
   try {
-    const data = review.find({rating:review.rating})
+    const data = await Review.find({})
     console.log(data)
-    return res.status(200).json({msg:"data enviada"})
+    return res.send(data)
   } catch (error) {
     return res.status(403).json({msg:"data no adquirida"})
   }
