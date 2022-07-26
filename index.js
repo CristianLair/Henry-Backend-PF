@@ -23,7 +23,7 @@ const changePassword = require("./controllers/authController");
 const { checkRolesExisted } = require("./middleweare/VerifyToken");
 const emailRecoverPassword = require("./routes/emails/emailRecoverPassword");
 const templateForgottenPassword = require("./routes/emails/emailForgottenPassword");
-const review = require('./models/review')
+const Review = require('./models/review')
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 conectarDB();
