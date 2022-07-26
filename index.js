@@ -23,7 +23,7 @@ const changePassword = require("./controllers/authController");
 const { checkRolesExisted } = require("./middleweare/VerifyToken");
 const emailRecoverPassword = require("./routes/emails/emailRecoverPassword");
 const templateForgottenPassword = require("./routes/emails/emailForgottenPassword");
-
+const review = require('./models/review')
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 conectarDB();
@@ -123,7 +123,17 @@ app.put("/:email/newpassword", (req, res, next) => {
   }
   return null;
 });
+app.get('/reviews',(req,res,next)=>{
 
+
+  try {
+    const data = review.find({rating:review.rating})
+    console.log(data)
+    return res.status(200).json({msg:"data enviada"})
+  } catch (error) {
+    return res.status(403).json({msg:"data no adquirida"})
+  }
+})
 app.post('/:email/reviews',(req,res,next)=>{
   
   const review = new Review();
