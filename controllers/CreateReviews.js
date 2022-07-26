@@ -1,5 +1,8 @@
 
-export const createReview = (req, res) => {
+
+const review = require('../models/review');
+
+ const createReview = (req, res) => {
     const review = new Review();
     review.username = req.body.username;
     review.rating = req.body.rating;
@@ -20,3 +23,7 @@ export const createReview = (req, res) => {
         res.status(500).json({ error });
       });
 };
+
+
+
+module.exports = {createReview}
