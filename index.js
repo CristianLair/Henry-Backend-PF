@@ -193,17 +193,22 @@ app.put("/admin/edit/:email", verifyAdmin, updateAdminById);
 app.put("/admin/edituser/:email", verifyAdmin, updateAdminToUser);
 app.post("/admin/nftcreated", verifyAdmin, getDBNfts);
 app.put("/admin/user/:email/status", (req, res) => {
-  Usuario.findOne(req.params.email, (err, foundUser) => {
+  Usuario.findOne({email: req.params.email}, (err, foundUser) => {
       console.log(foundUser.isActive);
-      if (err) {
-          console.log(err);
-      } else if (foundUser.isActive == false) {
+      try{
+          
+      if (foundUser.isActive == false) {
           Usuario.updateOne({email: req.params.email}, {$set: {isActive: true}});
           
+          res.send({message: "The account has been unsuspended"})
       } else {
           Usuario.updateOne({email: req.params.email}, {$set: {isActive: false}});
-         
+          console.log(err);
+         res.send({message: "The account has been suspended"})
       }
+    }catch(err){
+      console.log(err)
+    }
   });
 })
 
