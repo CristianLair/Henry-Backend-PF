@@ -10,15 +10,15 @@ const autenticarUsuario = async (req,res) => {
     if(!errores.isEmpty()){
         return res.status(400).json({errores: errores.array()})
     }
-
+   
     const {email,password} = req.body
 
     try {
         let usuario = await User.findOne({email})
+        
         if(!usuario){
             return res.status(400).json({msg:'usuario inexistente'})
         }
-
         const passwordCorrect = await bcryptjs.compare(password,usuario.password)
         console.log(password)
         console.log(usuario.password,"aca")
