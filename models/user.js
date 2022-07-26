@@ -23,6 +23,10 @@ const userSchema =  mongoose.Schema({
     username: {
         type: String,
     },
+    isActive: {
+      type: Boolean,
+      default: true
+  },
     lastName:{type:String},
     description: {type:String},
     profilePic: {type:String},

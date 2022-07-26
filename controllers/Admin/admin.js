@@ -56,6 +56,8 @@ async function getUsersDb(_req, res, next) {
   }
 
 
+
+
   const deleteUser = async (req, res) => {
     const id = req.params.id;
     try {

@@ -129,7 +129,7 @@ app.post('/:email/reviews',(req,res,next)=>{
   const review = new Review();
     review.email = req.body.email;
     review.rating = req.body.rating;
-    
+
     review.save()
     .then((result) => {
       Usuario.findOne({ email: review.email }, (err, user) => {
@@ -174,6 +174,7 @@ app.get("/:email/recoverpassword", (req, res, next) => {
 });
 app.use("/auth", authRouter);
 // Rutas para el admin
+
 app.get("/admin/verify", verifyAdmin);
 app.post("/admin/users", verifyAdmin, getUsersDb);
 app.delete("/admin/delete", verifyAdmin, deleteUser);
@@ -181,6 +182,21 @@ app.get("/admin/:id", verifyAdmin, getUserById);
 app.put("/admin/edit/:email", verifyAdmin, updateAdminById);
 app.put("/admin/edituser/:email", verifyAdmin, updateAdminToUser);
 app.post("/admin/nftcreated", verifyAdmin, getDBNfts);
+app.put("/admin/user/:email/status", (req, res) => {
+  Usuario.findOne(req.params.email, (err, foundUser) => {
+      console.log(foundUser.isActive);
+      if (err) {
+          console.log(err);
+      } else if (foundUser.isActive == false) {
+          Usuario.updateOne({email: req.params.email}, {$set: {isActive: true}});
+          
+      } else {
+          Usuario.updateOne({email: req.params.email}, {$set: {isActive: false}});
+         
+      }
+  });
+})
+
 //endpoint donde veremos mediante un json los usuarios
 
 
