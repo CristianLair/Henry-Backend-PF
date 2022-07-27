@@ -26,6 +26,7 @@ const templateForgottenPassword = require("./routes/emails/emailForgottenPasswor
 const Review = require('./models/review')
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const { response } = require("express");
 conectarDB();
 pruebaRoles();
 
@@ -193,16 +194,16 @@ app.put("/admin/edit/:email", verifyAdmin, updateAdminById);
 app.put("/admin/edituser/:email", verifyAdmin, updateAdminToUser);
 app.post("/admin/nftcreated", verifyAdmin, getDBNfts);
 app.put("/admin/user/:email/status", (req, res) => {
-  Usuario.findOne({email: req.params.email}, (err, foundUser) => {
-      console.log(foundUser.isActive);
+  Usuario.findOne({email: req.params.email}, async (err, foundUser) => {
+     
       try{
           
-      if (foundUser.isActive == false) {
-          Usuario.updateOne({email: req.params.email}, {$set: {isActive: true}});
-          
+      if (foundUser.isActive === false) {
+          await Usuario.findOneAndUpdate({email: req.params.email}, {$set: {isActive: true}});
+         
           res.send({message: "The account has been unsuspended"})
       } else {
-          Usuario.updateOne({email: req.params.email}, {$set: {isActive: false}});
+          await Usuario.findOneAndUpdate({email: req.params.email}, {$set: {isActive: false}});
           console.log(err);
          res.send({message: "The account has been suspended"})
       }
@@ -211,6 +212,7 @@ app.put("/admin/user/:email/status", (req, res) => {
     }
   });
 })
+  
 
 //endpoint donde veremos mediante un json los usuarios
 
