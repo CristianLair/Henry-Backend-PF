@@ -15,6 +15,9 @@ const autenticarUsuario = async (req,res) => {
 
     try {
         let usuario = await User.findOne({email})
+        if(usuario.isActive === false){
+            return res.status(404).json({msg:"cuenta inactiva"})
+        }
         
         if(!usuario){
             return res.status(400).json({msg:'usuario inexistente'})
