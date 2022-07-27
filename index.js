@@ -140,7 +140,7 @@ app.post('/:email/reviews',(req,res,next)=>{
   const review = new Review();
     review.email = req.body.email;
     review.rating = req.body.rating;
-
+    review.username = req.body.username
     review.save()
     .then((result) => {
       Usuario.findOne({ email: review.email }, (err, user) => {
