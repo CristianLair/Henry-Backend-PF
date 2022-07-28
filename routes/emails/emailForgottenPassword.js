@@ -126,7 +126,7 @@ const {
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                             <tr>
                             <td bgcolor="#000000" align="left" style="padding: 20px 30px 40px 30px; color: #CCCCCC; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                                <p style="margin: 0;">You can recover your password by clicking <a href="${"https://wallaby-neon.vercel.app"}/${email}/newpassword">here</a>.</p>
+                                <p style="margin: 0;">You can recover your password by clicking <a href="${"https://wallabyapp.vercel.app"}/${email}/newpassword">here</a>.</p>
                             </td>  
                         </tr>
                         <tr>
