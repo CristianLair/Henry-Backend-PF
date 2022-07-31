@@ -49,7 +49,7 @@ module.exports = {
     );
 
     // Crear un usuario
-    User.create({
+     User.create({
       fullName: req.body.fullName,
       email: req.body.email,
       password: password,
@@ -58,8 +58,10 @@ module.exports = {
         // Creamos el token
         let token = jwt.sign({ user: user }, authConfig.secret, {
           expiresIn: authConfig.expires,
-        });
-
+        }.then(async ()=>{
+          await user.save()
+        }));
+       
         res.json({
           user: user,
           token: token,
