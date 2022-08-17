@@ -17,7 +17,7 @@ const createNft = require("../controllers/nftPostController");
 // GET all nfts
 router.get("/nfts/:name", getAllNft);
 router.get("/nfts/", getNameNft);
-router.get('/tests', getNftsComplete);
+//router.get('/tests', getNftsComplete);
 router.get('/tests/nftid', getNftId);
 router.get('/nftonecolleccion', getOneCollection);
 router.get('/tests/price', getNFTPrice)
