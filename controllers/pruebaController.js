@@ -13,6 +13,7 @@ const getNftsComplete = async (req, res ) => {
 
         const cursor = req.query.cursor ? req.query.cursor : null;
         
+        
        
         const respuesta = [];
         
@@ -55,10 +56,11 @@ const getNftsComplete = async (req, res ) => {
         
 
         console.log(respuesta.length)
-        res.send(respuesta)
+        
+        return res.send(respuesta)
         
     } catch (error) {
-        console.log(error)
+        console.log(error,' este es el error del bug??')
         
     }
     
