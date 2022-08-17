@@ -4,7 +4,7 @@ const authRouter = require("./routes/googleRoutes");
 
 const express = require("express");
 const mongoose = require("mongoose");
-const nftRoutes = require("./routes/nftRoutes");
+const nftRoutes = require("./controllers/googleController");
 const user = require("./controllers/usuarioController");
 const Usuario = require("./models/user");
 const authUser = require("./controllers/authController");
