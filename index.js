@@ -4,7 +4,7 @@ const authRouter = require("./routes/googleRoutes");
 
 const express = require("express");
 const mongoose = require("mongoose");
-const nftRoutes = require("./controllers/googleController");
+const {nftRoutes} = require('./controllers/nftGetController')
 const user = require("./controllers/usuarioController");
 const Usuario = require("./models/user");
 const authUser = require("./controllers/authController");
@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/api", nftRoutes);
+app.get("/api", nftRoutes);
 app.use("/api/registro", user, checkRolesExisted);
 app.use("/api/login", authUser);
 app.put("/:email/updatePassword", (req, res, next) => {
